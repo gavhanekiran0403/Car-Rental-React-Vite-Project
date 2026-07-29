@@ -1,0 +1,25 @@
+.admin-sidebar {
+  width: 250px;
+  background-color: #0f172a;
+  color: white;
+  padding: 20px;
+}
+
+.logo {
+  margin-bottom: 30px;
+}
+
+.sidebar-menu {
+  list-style: none;
+}
+
+.sidebar-menu li {
+  padding: 12px 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.sidebar-menu li:hover {
+  background-color: #1e293b;
+}

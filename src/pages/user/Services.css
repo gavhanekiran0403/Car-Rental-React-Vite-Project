@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Poppins",sans-serif;
+}
+
+body{
+background:#0b1120;
+}
+
+.services-page{
+background:#0b1120;
+color:#fff;
+padding-bottom: 30px;
+}
+
+/* Hero */
+
+.services-hero{
+
+height:70vh;
+
+background:
+linear-gradient(rgba(11,17,32,.75),rgba(11,17,32,.75)),
+url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2083&auto=format&fit=crop");
+
+background-size:cover;
+background-position:center;
+
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+
+}
+
+.services-overlay h1{
+
+font-size:65px;
+margin-bottom:20px;
+
+}
+
+.services-overlay p{
+
+font-size:20px;
+color:#ddd;
+
+}
+
+/* Intro */
+
+.service-intro{
+
+padding:90px 8%;
+text-align:center;
+
+}
+
+.service-intro h2{
+
+font-size:45px;
+margin-bottom:20px;
+
+}
+
+.service-intro p{
+
+max-width:800px;
+margin:auto;
+line-height:1.9;
+color:#cbd5e1;
+
+}
+
+/* Cards */
+
+.services-container{
+
+padding:20px 8% 100px;
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+gap:35px;
+
+}
+
+.service-card{
+
+background:rgba(255,255,255,.05);
+
+backdrop-filter:blur(15px);
+
+border:1px solid rgba(255,255,255,.08);
+
+padding:40px;
+
+border-radius:25px;
+
+text-align:center;
+
+transition:.4s;
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+.service-card::before{
+
+content:"";
+
+position:absolute;
+
+width:120%;
+
+height:120%;
+
+background:linear-gradient(45deg,transparent,#facc15,transparent);
+
+top:-120%;
+
+left:-120%;
+
+transition:.7s;
+
+}
+
+.service-card:hover::before{
+
+top:100%;
+left:100%;
+
+}
+
+.service-card:hover{
+
+transform:translateY(-12px);
+
+border-color:#facc15;
+
+box-shadow:0 20px 50px rgba(250,204,21,.15);
+
+}
+
+.icon{
+
+font-size:60px;
+
+color:#facc15;
+
+margin-bottom:25px;
+
+}
+
+.service-card h3{
+
+font-size:28px;
+
+margin-bottom:15px;
+
+}
+
+.service-card p{
+
+line-height:1.8;
+
+color:#cbd5e1;
+
+}
+
+/* Bottom Banner */
+
+.service-banner{
+
+margin:80px 8%;
+
+margin-bottom:100px;
+
+background:linear-gradient(135deg,#facc15,#f59e0b);
+
+border-radius:30px;
+
+padding:70px;
+
+text-align:center;
+
+color:#111827;
+
+}
+
+.service-banner h2{
+
+font-size:45px;
+
+margin-bottom:15px;
+
+}
+
+.service-banner p{
+
+font-size:18px;
+
+margin-bottom:30px;
+
+}
+
+.service-banner button{
+
+padding:16px 40px;
+
+border:none;
+
+background:#111827;
+
+color:white;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-size:17px;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+.service-banner button:hover{
+
+background:#000;
+
+transform:scale(1.05);
+
+}
+
+/* Responsive */
+
+@media(max-width:992px){
+
+.services-overlay h1{
+
+font-size:45px;
+
+}
+
+.service-intro h2{
+
+font-size:35px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.services-hero{
+
+height:55vh;
+
+}
+
+.services-overlay h1{
+
+font-size:34px;
+
+}
+
+.services-overlay p{
+
+font-size:16px;
+
+}
+
+.service-intro,
+.services-container{
+
+padding:70px 20px;
+
+}
+
+.service-banner{
+
+margin:40px 20px;
+
+padding:40px 20px;
+
+}
+
+.service-banner h2{
+
+font-size:30px;
+}
+
+.service-banner button{
+
+width:100%;
+
+}
+
+}

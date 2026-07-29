@@ -1,0 +1,17 @@
+.admin-topbar {
+  background-color: white;
+  padding: 15px 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid #ddd;
+}
+
+.admin-profile {
+  background-color: #0f172a;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 6px;
+}

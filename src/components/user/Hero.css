@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Poppins",sans-serif;
+}
+
+/* HERO SECTION */
+
+.hero{
+  width:100%;
+  min-height:100vh;
+
+  background:
+  linear-gradient(
+    rgba(17,24,39,0.75),
+    rgba(17,24,39,0.75)
+  ),
+  url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2083&auto=format&fit=crop");
+
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+
+  display:flex;
+  align-items:center;
+
+  padding:140px 8% 80px;
+
+  overflow:hidden;
+
+  position:relative;
+}
+
+/* CONTENT */
+
+.hero-content{
+  max-width:650px;
+}
+
+/* TAG */
+
+.hero-tag{
+  display:inline-block;
+
+  padding:10px 22px;
+
+  border-radius:30px;
+
+  background:rgba(250,204,21,0.12);
+
+  border:1px solid rgba(250,204,21,0.20);
+
+  color:#facc15;
+
+  font-size:15px;
+  font-weight:500;
+
+  margin-bottom:28px;
+}
+
+/* TITLE */
+
+.hero-content h1{
+  color:white;
+
+  font-size:88px;
+  line-height:1.05;
+
+  font-weight:800;
+
+  margin-bottom:24px;
+}
+
+/* DESCRIPTION */
+
+.hero-content p{
+  color:#d1d5db;
+
+  font-size:21px;
+  line-height:1.8;
+
+  margin-bottom:42px;
+
+  max-width:560px;
+}
+
+/* BUTTONS */
+
+.hero-buttons{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+/* BOOK BUTTON */
+
+.book-btn{
+  padding:18px 40px;
+
+  border:none;
+  outline:none;
+
+  border-radius:16px;
+
+  background:#facc15;
+  color:black;
+
+  font-size:17px;
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:0.3s;
+
+  box-shadow:0 5px 18px rgba(250,204,21,0.35);
+}
+
+.book-btn:hover{
+  background:#fde047;
+
+  transform:translateY(-3px);
+}
+
+/* EXPLORE BUTTON */
+
+.explore-btn{
+  padding:18px 40px;
+
+  border:1px solid rgba(255,255,255,0.18);
+
+  border-radius:16px;
+
+  background:transparent;
+  color:white;
+
+  font-size:17px;
+  font-weight:500;
+
+  cursor:pointer;
+
+  transition:0.3s;
+}
+
+.explore-btn:hover{
+  background:white;
+  color:black;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:992px){
+
+  .hero{
+    justify-content:center;
+
+    text-align:center;
+  }
+
+  .hero-buttons{
+    justify-content:center;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .hero{
+    padding:120px 20px 60px;
+  }
+
+  .hero-content h1{
+    font-size:56px;
+  }
+
+  .hero-content p{
+    font-size:18px;
+  }
+
+  .hero-buttons{
+    flex-direction:column;
+  }
+
+  .book-btn,
+  .explore-btn{
+    width:100%;
+  }
+
+}
