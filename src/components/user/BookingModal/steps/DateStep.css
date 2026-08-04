@@ -1,0 +1,123 @@
+.date-step {
+    width: 100%;
+}
+
+.date-step h2 {
+    font-size: 28px;
+    color: #222;
+    margin-bottom: 8px;
+}
+
+.date-subtitle {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 15px;
+}
+
+.date-group {
+    margin-bottom: 20px;
+}
+
+.date-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.date-group input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s;
+    box-sizing: border-box;
+}
+
+.date-group input:focus {
+    border-color: #f4b400;
+    box-shadow: 0 0 8px rgba(244, 180, 0, 0.3);
+}
+
+.error-message {
+    margin-top: 15px;
+    color: red;
+    font-weight: 600;
+}
+
+.booked-box {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 10px;
+}
+
+.booked-box h4 {
+    margin-bottom: 12px;
+    color: #e65100;
+}
+
+.booked-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.booked-list li {
+    padding: 8px 0;
+    color: #555;
+    border-bottom: 1px solid #eee;
+}
+
+.booked-list li:last-child {
+    border-bottom: none;
+}
+
+.step-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 35px;
+}
+
+.next-btn {
+    background: #f4b400;
+    color: #fff;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.next-btn:hover {
+    background: #e09d00;
+}
+
+.next-btn:active {
+    transform: scale(0.97);
+}
+
+@media (max-width: 768px) {
+
+    .date-step h2 {
+        font-size: 22px;
+    }
+
+    .date-group input {
+        padding: 12px;
+    }
+
+    .next-btn {
+        width: 100%;
+    }
+
+    .step-buttons {
+        justify-content: center;
+    }
+
+}

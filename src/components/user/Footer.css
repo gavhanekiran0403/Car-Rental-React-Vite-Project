@@ -1,240 +1,275 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:"Poppins",sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
 }
 
 body{
-  overflow-x:hidden;
-
-  background:#0f172a;
+    overflow-x:hidden;
+    background:#0f172a;
 }
 
-/* FOOTER */
+/* ==========================
+   FOOTER
+========================== */
 
 .footer{
-  width:100%;
-
-  background:#111827;
-
-  padding:80px 8% 30px;
-
-  color:white;
-
-  overflow:hidden;
+    width:100%;
+    background:#111827;
+    color:#fff;
+    padding:80px 8% 30px;
+    overflow:hidden;
 }
 
-/* TOP SECTION */
+/* ==========================
+   TOP SECTION
+========================== */
 
 .footer-top{
-  display:grid;
-
-  grid-template-columns:
-  2fr 1fr 1fr 1.2fr;
-
-  gap:60px;
-
-  padding-bottom:50px;
-
-  border-bottom:
-  1px solid rgba(255,255,255,0.08);
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1.2fr;
+    gap:60px;
+    padding-bottom:50px;
+    border-bottom:1px solid rgba(255,255,255,.08);
 }
 
-/* LOGO */
+/* ==========================
+   LOGO
+========================== */
 
 .footer-logo{
-  font-size:42px;
-
-  font-weight:800;
-
-  margin-bottom:20px;
+    font-size:42px;
+    font-weight:800;
+    margin-bottom:20px;
 }
 
 .footer-logo span{
-  color:#facc15;
+    color:#facc15;
 }
 
-/* ABOUT */
+/* ==========================
+   ABOUT
+========================== */
 
 .footer-about p{
-  color:#d1d5db;
-
-  line-height:1.8;
-
-  margin-bottom:28px;
-
-  max-width:380px;
+    color:#d1d5db;
+    line-height:1.8;
+    margin-bottom:28px;
+    max-width:380px;
 }
 
-/* SOCIAL ICONS */
+/* ==========================
+   SOCIAL ICONS
+========================== */
 
 .social-icons{
-  display:flex;
-  align-items:center;
-  gap:14px;
-
-  flex-wrap:wrap;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
 }
 
 .social-icons a{
-  width:45px;
-  height:45px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border-radius:50%;
-
-  background:rgba(255,255,255,0.08);
-
-  color:white;
-
-  text-decoration:none;
-
-  font-size:18px;
-
-  transition:0.3s;
+    width:45px;
+    height:45px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    text-decoration:none;
+    font-size:18px;
+    transition:.3s;
 }
 
 .social-icons a:hover{
-  background:#facc15;
-
-  color:black;
-
-  transform:translateY(-3px);
+    background:#facc15;
+    color:#111827;
+    transform:translateY(-4px);
 }
 
-/* LINKS */
+/* ==========================
+   LINKS
+========================== */
 
 .footer-links{
-  display:flex;
-  flex-direction:column;
+    display:flex;
+    flex-direction:column;
 }
 
 .footer-links h3,
 .footer-contact h3{
-  font-size:22px;
-
-  margin-bottom:24px;
+    font-size:22px;
+    margin-bottom:24px;
 }
 
 .footer-links a{
-  color:#d1d5db;
-
-  text-decoration:none;
-
-  margin-bottom:16px;
-
-  transition:0.3s;
+    color:#d1d5db;
+    text-decoration:none;
+    margin-bottom:15px;
+    transition:.3s;
 }
 
 .footer-links a:hover{
-  color:#facc15;
-
-  padding-left:5px;
+    color:#facc15;
+    padding-left:5px;
 }
 
-/* CONTACT */
+/* ==========================
+   CONTACT
+========================== */
 
 .footer-contact p{
-  color:#d1d5db;
-
-  margin-bottom:18px;
-
-  line-height:1.7;
-
-  word-break:break-word;
+    color:#d1d5db;
+    line-height:1.8;
+    margin-bottom:18px;
+    word-break:break-word;
 }
 
-/* BOTTOM */
+/* ==========================
+   BOTTOM
+========================== */
 
 .footer-bottom{
-  text-align:center;
-
-  padding-top:28px;
+    text-align:center;
+    padding-top:30px;
 }
 
 .footer-bottom p{
-  color:#9ca3af;
-
-  font-size:15px;
-
-  line-height:1.6;
+    color:#9ca3af;
+    font-size:15px;
+    line-height:1.7;
 }
 
-/* TABLET VIEW */
+/* ==========================
+   TABLET
+========================== */
 
 @media(max-width:992px){
 
-  .footer-top{
-    grid-template-columns:
-    repeat(2,1fr);
+    .footer{
+        padding:70px 5% 30px;
+    }
 
-    gap:40px;
-  }
+    .footer-top{
+        grid-template-columns:repeat(2,1fr);
+        gap:40px;
+    }
+
+    .footer-about p{
+        max-width:100%;
+    }
 
 }
 
-/* MOBILE VIEW */
+/* ==========================
+   MOBILE
+========================== */
 
 @media(max-width:768px){
 
-  .footer{
-    width:100%;
+    .footer{
+        padding:55px 20px 25px;
+        text-align:center;
+    }
 
-    padding:60px 20px 25px;
-  }
+    .footer-top{
+        grid-template-columns:1fr;
+        gap:35px;
+    }
 
-  /* GRID */
+    .footer-logo{
+        font-size:34px;
+    }
 
-  .footer-top{
-    grid-template-columns:1fr;
+    .footer-about p{
+        max-width:100%;
+        font-size:15px;
+        margin:0 auto 25px;
+    }
 
-    gap:35px;
+    .footer-links,
+    .footer-contact{
+        align-items:center;
+    }
 
-    width:100%;
-  }
+    .footer-links h3,
+    .footer-contact h3{
+        font-size:20px;
+        margin-bottom:18px;
+    }
 
-  /* LOGO */
+    .footer-links a{
+        font-size:15px;
+        margin-bottom:12px;
+    }
 
-  .footer-logo{
-    font-size:32px;
-  }
+    .footer-contact p{
+        font-size:15px;
+        margin-bottom:12px;
+    }
 
-  /* TEXT */
+    .social-icons{
+        justify-content:center;
+    }
 
-  .footer-about p,
-  .footer-contact p,
-  .footer-links a{
-    font-size:15px;
+    .social-icons a{
+        width:42px;
+        height:42px;
+        font-size:16px;
+    }
 
-    line-height:1.7;
-  }
+    .footer-bottom{
+        padding-top:25px;
+    }
 
-  /* HEADINGS */
+    .footer-bottom p{
+        font-size:14px;
+    }
 
-  .footer-links h3,
-  .footer-contact h3{
-    font-size:20px;
-  }
+}
 
-  /* SOCIAL ICONS */
+/* ==========================
+   SMALL MOBILE
+========================== */
 
-  .social-icons a{
-    width:40px;
-    height:40px;
+@media(max-width:480px){
 
-    font-size:16px;
-  }
+    .footer{
+        padding:45px 15px 20px;
+    }
 
-  /* BOTTOM */
+    .footer-logo{
+        font-size:30px;
+    }
 
-  .footer-bottom p{
-    font-size:14px;
-  }
+    .footer-links h3,
+    .footer-contact h3{
+        font-size:18px;
+    }
+
+    .footer-about p,
+    .footer-links a,
+    .footer-contact p{
+        font-size:14px;
+    }
+
+    .social-icons{
+        gap:10px;
+    }
+
+    .social-icons a{
+        width:38px;
+        height:38px;
+        font-size:15px;
+    }
+
+    .footer-bottom p{
+        font-size:13px;
+    }
 
 }

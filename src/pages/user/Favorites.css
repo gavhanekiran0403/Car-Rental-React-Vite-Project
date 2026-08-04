@@ -1,0 +1,314 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+body{
+    background:#0b1120;
+}
+
+/* ==========================
+   PAGE
+========================== */
+
+.favorites-page{
+    min-height:100vh;
+    background:#0b1120;
+    padding:120px 8% 60px;
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+.favorites-header{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.favorites-header h1{
+    color:#fff;
+    font-size:42px;
+    margin-bottom:12px;
+}
+
+.favorites-header p{
+    color:#cbd5e1;
+    font-size:17px;
+}
+
+/* ==========================
+   GRID
+========================== */
+
+.favorites-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    gap:30px;
+}
+
+/* ==========================
+   CARD
+========================== */
+
+.favorite-card{
+    background:#111827;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:22px;
+    overflow:hidden;
+    transition:.35s;
+}
+
+.favorite-card:hover{
+    transform:translateY(-8px);
+    border-color:#facc15;
+    box-shadow:0 15px 35px rgba(0,0,0,.30);
+}
+
+/* ==========================
+   IMAGE
+========================== */
+
+.favorite-image{
+    position:relative;
+    height:230px;
+}
+
+.favorite-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.favorite-remove{
+    position:absolute;
+    top:15px;
+    right:15px;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:#fff;
+    color:#ef4444;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    transition:.3s;
+}
+
+.favorite-remove:hover{
+    background:#ef4444;
+    color:#fff;
+}
+
+/* ==========================
+   CONTENT
+========================== */
+
+.favorite-content{
+    padding:25px;
+}
+
+.favorite-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.favorite-top h2{
+    color:#fff;
+    font-size:24px;
+}
+
+.favorite-top span{
+    color:#facc15;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-weight:600;
+}
+
+.favorite-info{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.favorite-info span{
+    color:#cbd5e1;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+}
+
+.favorite-info svg{
+    color:#facc15;
+}
+
+.favorite-content h3{
+    color:#facc15;
+    font-size:28px;
+    margin-bottom:25px;
+}
+
+.favorite-content h3 small{
+    color:#cbd5e1;
+    font-size:15px;
+}
+
+/* ==========================
+   BUTTONS
+========================== */
+
+.favorite-buttons{
+    display:flex;
+    gap:15px;
+}
+
+.favorite-buttons button{
+    flex:1;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.details-btn{
+    background:#1f2937;
+    color:#fff;
+}
+
+.details-btn:hover{
+    background:#374151;
+}
+
+.book-btn{
+    background:#facc15;
+    color:#111827;
+}
+
+.book-btn:hover{
+    background:#fde047;
+}
+
+/* ==========================
+   EMPTY
+========================== */
+
+.empty-favorites{
+    text-align:center;
+    padding:100px 20px;
+}
+
+.empty-favorites svg{
+    font-size:80px;
+    color:#ef4444;
+    margin-bottom:25px;
+}
+
+.empty-favorites h2{
+    color:#fff;
+    margin-bottom:12px;
+}
+
+.empty-favorites p{
+    color:#cbd5e1;
+}
+
+/* ==========================
+   TABLET
+========================== */
+
+@media(max-width:992px){
+
+    .favorites-page{
+        padding:100px 5% 50px;
+    }
+
+    .favorites-header h1{
+        font-size:36px;
+    }
+
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:768px){
+
+    .favorites-page{
+        padding:90px 20px 40px;
+    }
+
+    .favorites-container{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .favorite-image{
+        height:210px;
+    }
+
+    .favorite-top h2{
+        font-size:22px;
+    }
+
+    .favorite-buttons{
+        flex-direction:column;
+    }
+
+    .favorite-buttons button{
+        width:100%;
+    }
+
+}
+
+/* ==========================
+   SMALL MOBILE
+========================== */
+
+@media(max-width:480px){
+
+    .favorites-page{
+        padding:80px 15px 30px;
+    }
+
+    .favorites-header h1{
+        font-size:28px;
+    }
+
+    .favorites-header p{
+        font-size:14px;
+    }
+
+    .favorite-content{
+        padding:18px;
+    }
+
+    .favorite-top h2{
+        font-size:20px;
+    }
+
+    .favorite-content h3{
+        font-size:24px;
+    }
+
+    .favorite-image{
+        height:190px;
+    }
+
+}

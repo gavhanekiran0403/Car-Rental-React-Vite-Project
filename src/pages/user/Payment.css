@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+body{
+    background:#0b1120;
+    overflow-x:hidden;
+}
+
+/* ==========================
+   PAGE
+========================== */
+
+.payment-page{
+    min-height:100vh;
+    background:#0b1120;
+    padding:120px 8% 60px;
+}
+
+.payment-container{
+    max-width:900px;
+    margin:auto;
+    background:#111827;
+    border-radius:22px;
+    padding:35px;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+.payment-container h1{
+    color:#fff;
+    text-align:center;
+    margin-bottom:30px;
+}
+
+/* ==========================
+   BACK BUTTON
+========================== */
+
+.payment-back{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#1f2937;
+    color:#fff;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:25px;
+    transition:.3s;
+}
+
+.payment-back:hover{
+    background:#374151;
+}
+
+/* ==========================
+   BOOKING SUMMARY
+========================== */
+
+.booking-summary{
+    display:flex;
+    gap:25px;
+    align-items:center;
+    background:#1f2937;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:30px;
+}
+
+.booking-summary img{
+    width:230px;
+    height:150px;
+    object-fit:cover;
+    border-radius:14px;
+}
+
+.booking-details{
+    flex:1;
+}
+
+.booking-details h2{
+    color:#fff;
+    margin-bottom:15px;
+}
+
+.booking-details p{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#d1d5db;
+    margin:10px 0;
+}
+
+.booking-details svg{
+    color:#facc15;
+}
+
+/* ==========================
+   PRICE DETAILS
+========================== */
+
+.payment-price{
+    background:#1f2937;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:30px;
+}
+
+.payment-price h2{
+    color:#fff;
+    margin-bottom:20px;
+}
+
+.payment-price div{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    color:#d1d5db;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.payment-total{
+    border:none!important;
+    color:#facc15!important;
+    font-size:20px;
+    font-weight:700;
+}
+
+/* ==========================
+   PAYMENT METHOD
+========================== */
+
+.payment-method{
+    background:#1f2937;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:30px;
+}
+
+.payment-method h2{
+    color:#fff;
+    margin-bottom:20px;
+}
+
+.payment-method label{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:#d1d5db;
+    padding:14px 0;
+    cursor:pointer;
+}
+
+.payment-method input{
+    accent-color:#facc15;
+}
+
+.payment-method svg{
+    color:#facc15;
+    font-size:20px;
+}
+
+/* ==========================
+   FORM
+========================== */
+
+.payment-form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.payment-form input{
+    width:100%;
+    padding:15px;
+    background:#1f2937;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:10px;
+    color:#fff;
+    font-size:15px;
+    outline:none;
+}
+
+.payment-form input:focus{
+    border-color:#facc15;
+}
+
+.card-row{
+    display:flex;
+    gap:15px;
+}
+
+.card-row input{
+    flex:1;
+}
+
+/* ==========================
+   BUTTONS
+========================== */
+
+.payment-buttons{
+    display:flex;
+    justify-content:flex-end;
+    gap:20px;
+}
+
+.cancel-btn{
+    background:#ef4444;
+    color:#fff;
+    border:none;
+    padding:14px 26px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.cancel-btn:hover{
+    background:#dc2626;
+}
+
+.pay-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#facc15;
+    color:#111827;
+    border:none;
+    padding:14px 28px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:700;
+    transition:.3s;
+}
+
+.pay-btn:hover{
+    background:#fde047;
+    transform:translateY(-2px);
+}
+
+/* ==========================
+   TABLET
+========================== */
+
+@media(max-width:992px){
+
+    .booking-summary{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .booking-summary img{
+        width:100%;
+        height:240px;
+    }
+
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:768px){
+
+    .payment-page{
+        padding:100px 20px 40px;
+    }
+
+    .payment-container{
+        padding:25px;
+    }
+
+    .booking-summary img{
+        height:200px;
+    }
+
+    .card-row{
+        flex-direction:column;
+    }
+
+    .payment-buttons{
+        flex-direction:column;
+    }
+
+    .payment-buttons button{
+        width:100%;
+    }
+
+}
+
+/* ==========================
+   SMALL MOBILE
+========================== */
+
+@media(max-width:480px){
+
+    .payment-page{
+        padding:90px 15px 30px;
+    }
+
+    .payment-container{
+        padding:18px;
+    }
+
+    .booking-summary{
+        padding:15px;
+    }
+
+    .booking-summary img{
+        height:170px;
+    }
+
+    .payment-price,
+    .payment-method{
+        padding:18px;
+    }
+
+    .payment-container h1{
+        font-size:28px;
+    }
+
+    .payment-price h2,
+    .payment-method h2{
+        font-size:20px;
+    }
+
+}

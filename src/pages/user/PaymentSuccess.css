@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+.payment-success-page{
+    min-height:100vh;
+    background:#0b1120;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:120px 20px;
+}
+
+.success-card{
+    width:100%;
+    max-width:600px;
+    background:#111827;
+    border-radius:22px;
+    padding:45px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.success-icon{
+    font-size:90px;
+    color:#22c55e;
+    margin-bottom:25px;
+}
+
+.success-card h1{
+    color:#fff;
+    margin-bottom:15px;
+}
+
+.success-card p{
+    color:#cbd5e1;
+    margin-bottom:35px;
+}
+
+.success-info{
+    background:#1f2937;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:35px;
+}
+
+.success-info div{
+    display:flex;
+    justify-content:space-between;
+    padding:15px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.success-info div:last-child{
+    border:none;
+}
+
+.success-info span{
+    color:#cbd5e1;
+}
+
+.success-info strong{
+    color:#facc15;
+}
+
+.success-buttons{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.invoice-btn,
+.home-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border:none;
+    padding:14px 24px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.invoice-btn{
+    background:#2563eb;
+    color:#fff;
+}
+
+.invoice-btn:hover{
+    background:#1d4ed8;
+}
+
+.home-btn{
+    background:#facc15;
+    color:#111827;
+}
+
+.home-btn:hover{
+    background:#fde047;
+}
+
+@media(max-width:768px){
+
+    .success-card{
+        padding:30px 20px;
+    }
+
+    .success-buttons{
+        flex-direction:column;
+    }
+
+    .invoice-btn,
+    .home-btn{
+        width:100%;
+        justify-content:center;
+    }
+
+}

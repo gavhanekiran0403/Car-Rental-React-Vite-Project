@@ -30,7 +30,7 @@ const Navbar = () => {
 
         <NavLink
           to="/"
-          className="logo"
+          className="nav-logo"
           onClick={closeMenu}
         >
           <span>Car</span>Rental
@@ -84,22 +84,45 @@ const Navbar = () => {
 
       <div className="nav-right">
 
-        <button className="icon-btn">
-          <FaHeart />
-        </button>
+        <NavLink
+    to="/favorites"
+    className="icon-btn"
+    title="Favorites"
+    onClick={closeMenu}
+>
+    <FaHeart />
+</NavLink>
 
-        <button className="icon-btn notification-btn">
+        <NavLink
+          to="/user-notifications"
+          className="icon-btn nav-notification-btn"
+          onClick={closeMenu}
+        >
+        
           <FaBell />
-          <span className="notification-dot"></span>
-        </button>
+          <span className="nav-notification-dot"></span>
+        </NavLink>
 
-        <button className="icon-btn">
+        {/* Profile */}
+
+        <NavLink
+          to="/profile"
+          className="icon-btn"
+          onClick={closeMenu}
+          title="Profile"
+        >
           <FaUserCircle />
-        </button>
+        </NavLink>
 
-        <button className="login-btn">
+        {/* Login */}
+
+        <NavLink
+          to="/login"
+          className="nav-login-btn"
+          onClick={closeMenu}
+        >
           Login
-        </button>
+        </NavLink>
 
       </div>
 

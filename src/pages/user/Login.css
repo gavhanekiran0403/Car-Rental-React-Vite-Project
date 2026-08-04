@@ -1,0 +1,373 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+body{
+    background:#0b1120;
+}
+
+.login-page{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:150px;
+
+    background:#0b1120;
+
+}
+
+.login-container{
+
+    width:1100px;
+    max-width:100%;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    background:#111827;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+}
+
+/* LEFT */
+
+.login-left{
+
+    background:
+    linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
+    url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2070&auto=format&fit=crop");
+
+    background-size:cover;
+    background-position:center;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:40px;
+
+}
+
+.login-overlay{
+
+    text-align:center;
+
+    color:white;
+
+}
+
+.login-car-icon{
+
+    font-size:70px;
+
+    color:#facc15;
+
+    margin-bottom:20px;
+
+}
+
+.login-overlay h1{
+
+    font-size:46px;
+
+    margin-bottom:20px;
+
+}
+
+.login-overlay p{
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    color:#d1d5db;
+
+}
+
+/* RIGHT */
+
+.login-right{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:50px;
+
+}
+
+.login-form{
+
+    width:100%;
+
+}
+
+.login-form h2{
+
+    color:white;
+
+    font-size:36px;
+
+}
+
+.login-form p{
+
+    color:#9ca3af;
+
+    margin:10px 0 30px;
+
+}
+
+.input-group{
+
+    display:flex;
+    align-items:center;
+
+    gap:15px;
+
+    background:#1f2937;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:12px;
+
+    padding:15px 18px;
+
+    margin-bottom:20px;
+
+}
+
+.input-group svg{
+
+    color:#facc15;
+
+}
+
+.input-group input{
+
+    flex:1;
+
+    background:none;
+
+    border:none;
+
+    outline:none;
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+.input-group input::placeholder{
+
+    color:#9ca3af;
+
+}
+
+.login-options{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+    color:#d1d5db;
+
+    font-size:14px;
+
+}
+
+.login-options a{
+
+    color:#facc15;
+
+    text-decoration:none;
+
+}
+
+.login-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#facc15;
+
+    color:black;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.login-btn:hover{
+
+    background:#fde047;
+
+}
+
+.divider{
+
+    text-align:center;
+
+    margin:25px 0;
+
+    color:#94a3b8;
+
+}
+
+.google-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    border:1px solid rgba(255,255,255,.1);
+
+    background:#1f2937;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.google-btn:hover{
+
+    background:#374151;
+
+}
+
+.signup-text{
+
+    margin-top:30px;
+
+    text-align:center;
+
+    color:#d1d5db;
+
+}
+
+.signup-text a{
+
+    color:#facc15;
+
+    margin-left:8px;
+
+    text-decoration:none;
+
+}
+
+/* Tablet */
+
+@media(max-width:992px){
+
+.login-container{
+
+grid-template-columns:1fr;
+
+}
+
+.login-left{
+
+height:300px;
+
+}
+
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.login-page{
+
+padding:20px;
+
+}
+
+.login-left{
+
+display:none;
+
+}
+
+.login-right{
+
+padding:35px 25px;
+
+}
+
+.login-form h2{
+
+font-size:30px;
+
+}
+
+.login-options{
+
+flex-direction:column;
+
+gap:15px;
+
+align-items:flex-start;
+
+}
+
+}
+
+/* Small Mobile */
+
+@media(max-width:480px){
+
+.login-right{
+
+padding:25px 18px;
+
+}
+
+.login-form h2{
+
+font-size:26px;
+
+}
+
+.login-btn,
+.google-btn{
+
+padding:14px;
+
+}
+
+}

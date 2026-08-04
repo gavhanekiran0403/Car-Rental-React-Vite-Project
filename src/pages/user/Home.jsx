@@ -3,8 +3,62 @@ import React from "react";
 import "./Home.css";
 
 import Hero from "../../components/user/Hero";
+import CarCard from "../../components/user/CarCard";
+import ServicesCard from "../../components/user/ServicesCard";
+
+const cars = [
+  {
+    id: 1,
+    modelName: "BMW X5",
+    fuelType: "Diesel",
+    seats: 7,
+    rent: 4500,
+    carYearModel: 2024,
+    features:
+      "GPS Navigation • Sunroof • Leather Seats • Reverse Camera • ABS • Airbags",
+    images: [
+      "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1200",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=500",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500",
+      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500",
+    ],
+  },
+  {
+    id: 2,
+    modelName: "Mercedes C-Class",
+    fuelType: "Petrol",
+    seats: 5,
+    rent: 5200,
+    carYearModel: 2023,
+    features:
+      "Automatic • GPS • Premium Audio • Leather Seats • Cruise Control",
+    images: [
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=1200",
+      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=500",
+      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=500",
+      "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=500",
+    ],
+  },
+  {
+    id: 3,
+    modelName: "Toyota Fortuner",
+    fuelType: "Diesel",
+    seats: 7,
+    rent: 3800,
+    carYearModel: 2022,
+    features:
+      "Touch Screen • Rear Camera • Bluetooth • ABS • Airbags",
+    images: [
+      "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=1200",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=500",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500",
+      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500",
+    ],
+  },
+];
 
 const Home = () => {
+  
   return (
     <div className="home">
 
@@ -28,51 +82,8 @@ const Home = () => {
 
         <div className="services-container">
 
-          <div className="service-card">
-
-            <div className="service-icon">
-              🚘
-            </div>
-
-            <h3>Luxury Cars</h3>
-
-            <p>
-              Premium luxury cars for weddings,
-              business trips, and vacations.
-            </p>
-
-          </div>
-
-          <div className="service-card">
-
-            <div className="service-icon">
-              💰
-            </div>
-
-            <h3>Affordable Pricing</h3>
-
-            <p>
-              Best pricing plans with no hidden
-              charges and premium quality.
-            </p>
-
-          </div>
-
-          <div className="service-card">
-
-            <div className="service-icon">
-              🕘
-            </div>
-
-            <h3>24/7 Support</h3>
-
-            <p>
-              Customer support available anytime
-              for your assistance.
-            </p>
-
-          </div>
-
+          <ServicesCard />
+          
         </div>
 
       </section>
@@ -91,90 +102,18 @@ const Home = () => {
 
         </div>
 
-        <div className="cars-container">
+         <div className="popular-cars-container">
 
-          {/* CAR 1 */}
+        {cars.slice(0, 3).map((car) => (
 
-          <div className="car-card">
-
-            <img
-              src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop"
-              alt="BMW"
+            <CarCard
+                key={car.id}
+                car={car}
             />
 
-            <div className="car-info">
+        ))}
 
-              <div>
-                <h3>BMW X5</h3>
-
-                <p className="car-price">
-                  ₹4500 / Day
-                </p>
-              </div>
-
-              <button className="primary-btn">
-                Rent Now
-              </button>
-
-            </div>
-
-          </div>
-
-          {/* CAR 2 */}
-
-          <div className="car-card">
-
-            <img
-              src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2083&auto=format&fit=crop"
-              alt="Audi"
-            />
-
-            <div className="car-info">
-
-              <div>
-                <h3>Audi A6</h3>
-
-                <p className="car-price">
-                  ₹5200 / Day
-                </p>
-              </div>
-
-              <button className="primary-btn">
-                Rent Now
-              </button>
-
-            </div>
-
-          </div>
-
-          {/* CAR 3 */}
-
-          <div className="car-card">
-
-            <img
-              src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=2070&auto=format&fit=crop"
-              alt="Mercedes"
-            />
-
-            <div className="car-info">
-
-              <div>
-                <h3>Mercedes C-Class</h3>
-
-                <p className="car-price">
-                  ₹6800 / Day
-                </p>
-              </div>
-
-              <button className="primary-btn">
-                Rent Now
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
+      </div>
 
       </section>
 

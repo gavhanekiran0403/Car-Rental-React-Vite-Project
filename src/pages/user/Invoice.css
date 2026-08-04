@@ -1,0 +1,305 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+body{
+    background:#0b1120;
+    overflow-x:hidden;
+}
+
+/* ==========================
+   PAGE
+========================== */
+
+.invoice-page{
+    min-height:100vh;
+    background:#0b1120;
+    padding:120px 8% 60px;
+}
+
+.invoice-container{
+    max-width:1000px;
+    margin:auto;
+    background:#111827;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.08);
+    padding:35px;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+/* ==========================
+   TOP BUTTONS
+========================== */
+
+.invoice-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.invoice-top div{
+    display:flex;
+    gap:12px;
+}
+
+.back-btn,
+.print-btn,
+.download-btn{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border:none;
+    cursor:pointer;
+    padding:12px 20px;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.back-btn{
+    background:#374151;
+    color:#fff;
+}
+
+.back-btn:hover{
+    background:#4b5563;
+}
+
+.print-btn{
+    background:#2563eb;
+    color:#fff;
+}
+
+.print-btn:hover{
+    background:#1d4ed8;
+}
+
+.download-btn{
+    background:#facc15;
+    color:#111827;
+}
+
+.download-btn:hover{
+    background:#fde047;
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+.invoice-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:40px;
+    padding-bottom:25px;
+    border-bottom:2px solid rgba(255,255,255,.08);
+}
+
+.invoice-header h1{
+    color:#fff;
+    font-size:38px;
+}
+
+.invoice-header h1 span{
+    color:#facc15;
+}
+
+.invoice-header p{
+    color:#9ca3af;
+    margin-top:8px;
+}
+
+.invoice-number{
+    text-align:right;
+}
+
+.invoice-number h2{
+    color:#facc15;
+    margin-bottom:8px;
+}
+
+.invoice-number p{
+    color:#d1d5db;
+}
+
+/* ==========================
+   CUSTOMER DETAILS
+========================== */
+
+.invoice-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:25px;
+    margin-bottom:35px;
+}
+
+.invoice-grid div{
+    background:#1f2937;
+    padding:20px;
+    border-radius:14px;
+}
+
+.invoice-grid h3{
+    color:#fff;
+    margin-bottom:15px;
+}
+
+.invoice-grid p{
+    color:#d1d5db;
+    margin:10px 0;
+    line-height:1.6;
+}
+
+.invoice-grid strong{
+    color:#fff;
+}
+
+/* ==========================
+   TABLE
+========================== */
+
+.invoice-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:35px;
+}
+
+.invoice-table thead{
+    background:#1f2937;
+}
+
+.invoice-table th{
+    color:#fff;
+    padding:16px;
+    text-align:left;
+}
+
+.invoice-table td{
+    padding:16px;
+    color:#d1d5db;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.total-row td{
+    font-size:18px;
+    font-weight:700;
+    color:#facc15;
+}
+
+/* ==========================
+   PAYMENT
+========================== */
+
+.payment-info{
+    background:#1f2937;
+    padding:25px;
+    border-radius:15px;
+}
+
+.payment-info h3{
+    color:#fff;
+    margin-bottom:18px;
+}
+
+.payment-info p{
+    color:#d1d5db;
+    margin:12px 0;
+}
+
+.payment-info strong{
+    color:#fff;
+    margin-right:8px;
+}
+
+.paid{
+    color:#22c55e;
+    font-weight:700;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media(max-width:992px){
+
+    .invoice-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .invoice-page{
+        padding:100px 20px 40px;
+    }
+
+    .invoice-container{
+        padding:20px;
+    }
+
+    .invoice-top{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .invoice-top div{
+        flex-direction:column;
+    }
+
+    .back-btn,
+    .print-btn,
+    .download-btn{
+        width:85%;
+        justify-content:center;
+    }
+
+    .invoice-header{
+        flex-direction:column;
+        gap:20px;
+    }
+
+    .invoice-number{
+        text-align:left;
+    }
+
+    .invoice-table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+    }
+
+}
+
+@media print{
+
+    .invoice-top{
+        display:none;
+    }
+
+    body{
+        background:#fff;
+    }
+
+    .invoice-page{
+        padding:0;
+        background:#fff;
+    }
+
+    .invoice-container{
+        box-shadow:none;
+        border:none;
+        max-width:100%;
+    }
+
+}
