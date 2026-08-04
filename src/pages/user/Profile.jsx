@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-import ProfileDetails from "../../components/user/profile/ProfileDetails";
-import UpdateProfile from "../../components/user/profile/UpdateProfile";
-import ChangePassword from "../../components/user/profile/ChangePassword";
-import MyBookings from "../../components/user/profile/MyBookings";
+import ProfileDetails from "../../components/user/Profile/ProfileDetails";
+import UpdateProfile from "../../components/user/Profile/UpdateProfile";
+import ChangePassword from "../../components/user/Profile/ChangePassword";
+import MyBookings from "../../components/user/Profile/MyBookings";
 
 import {
     FaUser,
