@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
 
 import {
@@ -13,13 +13,14 @@ import {
 
 const Register = () => {
 
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
         mobile: "",
         password: "",
         confirmPassword: "",
-        licensePhoto: null,
         terms: false,
     });
 
@@ -34,20 +35,56 @@ const Register = () => {
 
     };
 
-    const handleFile = (e) => {
-
-        setFormData({
-            ...formData,
-            licensePhoto: e.target.files[0],
-        });
-
-    };
-
     const handleSubmit = (e) => {
 
         e.preventDefault();
 
-        console.log(formData);
+        // Check password match
+        if(formData.password !== formData.confirmPassword){
+            alert("Passwords do not match");
+            return;
+        }
+
+        // Get existing users
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+
+        // check if email already exists
+        const userExists = users.find(
+            (user) => user.email === formData.email
+        );
+
+        if(userExists){
+            alert("User already registered with this email.");
+            return;
+        }
+
+        // Create new user object
+        const newUser = {
+            fullName : formData.fullName,
+            email : formData.email,
+            mobile : formData.mobile,
+            password : formData.password,
+        };
+
+        //save user
+        users.push(newUser);
+        localStorage.setItem("users", JSON.stringify(users));
+
+        alert("User successfully registered");
+
+        setFormData({
+            fullName : "",
+            email : "",
+            mobile : "",
+            password : "",
+            confirmPassword : "",
+            terms : false,
+        });
+
+        console.log(users);
+
+        // Redirect to Login page
+        navigate("/login");
 
     };
 
@@ -163,25 +200,6 @@ const Register = () => {
                                 name="confirmPassword"
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
-                                required
-                            />
-
-                        </div>
-
-                        <div className="upload-box">
-
-                            <label>
-
-                                <FaUpload/>
-
-                                Upload Driving License
-
-                            </label>
-
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleFile}
                                 required
                             />
 

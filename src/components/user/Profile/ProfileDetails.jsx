@@ -3,10 +3,12 @@ import "./ProfileDetails.css";
 
 const ProfileDetails = ({ onEdit, onPassword }) => {
 
+    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+
     const user = {
-        fullName: "Kiran Gavhane",
-        email: "kiran@gmail.com",
-        mobile: "9876543210",
+        fullName: loggedUser.fullName,
+        email: loggedUser.email,
+        mobile: loggedUser.mobile,
         drivingLicense:
             "https://via.placeholder.com/500x280?text=Driving+License"
     };

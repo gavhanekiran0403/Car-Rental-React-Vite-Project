@@ -14,13 +14,15 @@ const Navbar = () => {
 
   const closeMenu = () => setMenuOpen(false);
 
+  // Check if user is logged in
+  const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+
   return (
     <nav className="navbar">
 
       {/* Left */}
 
       <div className="nav-left">
-
         <button
           className="menu-btn"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -35,7 +37,6 @@ const Navbar = () => {
         >
           <span>Car</span>Rental
         </NavLink>
-
       </div>
 
       {/* Center */}
@@ -84,45 +85,55 @@ const Navbar = () => {
 
       <div className="nav-right">
 
-        <NavLink
-    to="/favorites"
-    className="icon-btn"
-    title="Favorites"
-    onClick={closeMenu}
->
-    <FaHeart />
-</NavLink>
+        {!loggedUser ? (
 
-        <NavLink
-          to="/user-notifications"
-          className="icon-btn nav-notification-btn"
-          onClick={closeMenu}
-        >
-        
-          <FaBell />
-          <span className="nav-notification-dot"></span>
-        </NavLink>
+          <NavLink
+            to="/login"
+            className="nav-login-btn"
+            onClick={closeMenu}
+          >
+            Login
+          </NavLink>
 
-        {/* Profile */}
+        ) : (
 
-        <NavLink
-          to="/profile"
-          className="icon-btn"
-          onClick={closeMenu}
-          title="Profile"
-        >
-          <FaUserCircle />
-        </NavLink>
+          <>
+            {/* Favorites */}
 
-        {/* Login */}
+            <NavLink
+              to="/favorites"
+              className="icon-btn"
+              title="Favorites"
+              onClick={closeMenu}
+            >
+              <FaHeart />
+            </NavLink>
 
-        <NavLink
-          to="/login"
-          className="nav-login-btn"
-          onClick={closeMenu}
-        >
-          Login
-        </NavLink>
+            {/* Notification */}
+
+            <NavLink
+              to="/user-notifications"
+              className="icon-btn nav-notification-btn"
+              title="Notifications"
+              onClick={closeMenu}
+            >
+              <FaBell />
+              <span className="nav-notification-dot"></span>
+            </NavLink>
+
+            {/* Profile */}
+
+            <NavLink
+              to="/profile"
+              className="icon-btn"
+              title="Profile"
+              onClick={closeMenu}
+            >
+              <FaUserCircle />
+            </NavLink>
+          </>
+
+        )}
 
       </div>
 

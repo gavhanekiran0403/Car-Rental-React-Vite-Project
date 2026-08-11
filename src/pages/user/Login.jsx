@@ -1,15 +1,38 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { FaEnvelope, FaLock, FaCarSide } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+
+        console.log(users);
+
+        const validUser = users.find(
+            (user) => 
+                user.email === email &&
+                user.password === password
+        );
+
+        if(validUser){
+            alert("Login successful...!!");
+
+            // save loggedUser
+            localStorage.setItem("loggedUser", JSON.stringify(validUser))
+
+        }else{
+            alert("Invalid email or password.");
+        }
+
+        navigate("/");
 
         console.log({
             email,

@@ -17,7 +17,7 @@ const BookingModal = ({ car, onClose }) => {
         pickupLocation: "",
         dropLocation: "",
         drivingOption: "SELF",
-        drivingLicense: "",
+        drivingLicense: null,
         driver: "",
         totalAmount: 0,
     });

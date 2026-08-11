@@ -30,9 +30,9 @@ const DrivingStep = ({
   const handleNext = () => {
     if (
       bookingData.drivingOption === "SELF" &&
-      bookingData.drivingLicense.trim() === ""
+      !bookingData.drivingLicense
     ) {
-      setError("Please enter your Driving Licence Number.");
+      setError("Please upload your Driving Licence.");
       return;
     }
 
@@ -59,6 +59,8 @@ const DrivingStep = ({
 
       <div className="driving-options">
 
+        {/* Self Drive */}
+
         <div
           className={
             bookingData.drivingOption === "SELF"
@@ -79,6 +81,8 @@ const DrivingStep = ({
           </p>
         </div>
 
+        {/* With Driver */}
+
         <div
           className={
             bookingData.drivingOption === "WITH_DRIVER"
@@ -88,7 +92,7 @@ const DrivingStep = ({
           onClick={() =>
             updateBooking({
               drivingOption: "WITH_DRIVER",
-              drivingLicense: "",
+              drivingLicense: null,
             })
           }
         >
@@ -101,26 +105,35 @@ const DrivingStep = ({
 
       </div>
 
+      {/* Self Drive Upload */}
+
       {bookingData.drivingOption === "SELF" && (
 
         <div className="driver-select">
 
-          <label>Driving Licence Number</label>
+          <label>Upload Driving Licence</label>
 
           <input
-            type="text"
-            placeholder="Enter Driving Licence Number"
-            value={bookingData.drivingLicense}
+            type="file"
+            accept="image/*,.pdf"
             onChange={(e) =>
               updateBooking({
-                drivingLicense: e.target.value.toUpperCase(),
+                drivingLicense: e.target.files[0],
               })
             }
           />
 
+          {bookingData.drivingLicense && (
+            <p className="file-name">
+              Selected File: {bookingData.drivingLicense.name}
+            </p>
+          )}
+
         </div>
 
       )}
+
+      {/* Driver Selection */}
 
       {bookingData.drivingOption === "WITH_DRIVER" && (
 
@@ -156,11 +169,15 @@ const DrivingStep = ({
 
       )}
 
+      {/* Error */}
+
       {error && (
         <div className="driver-error">
           {error}
         </div>
       )}
+
+      {/* Buttons */}
 
       <div className="driving-buttons">
 

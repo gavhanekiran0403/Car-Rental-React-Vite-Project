@@ -56,6 +56,29 @@
     margin-top:20px;
 }
 
+.driver-select input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border: none;
+    /* border: 2px dashed #ccc;
+    border-radius: 8px; */
+    background: #fafafa;
+    cursor: pointer;
+}
+
+.driver-select input[type="file"]:hover {
+    /* border-color: #007bff; */
+    border: none;
+}
+
+.file-name {
+    margin-top: 10px;
+    color: #28a745;
+    font-size: 14px;
+    font-weight: 600;
+}
+
 .driver-select label{
     display:block;
     margin-bottom:10px;
@@ -63,7 +86,6 @@
     color:#333;
 }
 
-.driver-select input,
 .driver-select select{
     width:100%;
     padding:14px;
@@ -75,7 +97,6 @@
     box-sizing:border-box;
 }
 
-.driver-select input:focus,
 .driver-select select:focus{
     border-color:#ffb300;
     box-shadow:0 0 10px rgba(255,179,0,.25);

@@ -3,10 +3,12 @@ import "./UpdateProfile.css";
 
 const UpdateProfile = ({ onCancel }) => {
 
+    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+
     const [user, setUser] = useState({
-        fullName: "Kiran Gavhane",
-        email: "kiran@gmail.com",
-        mobile: "9876543210",
+        fullName: loggedUser.fullName,
+        email: loggedUser.email,
+        mobile: loggedUser.mobile,
         drivingLicense: null
     });
 
