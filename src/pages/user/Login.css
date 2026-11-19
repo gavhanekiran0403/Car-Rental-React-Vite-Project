@@ -371,3 +371,58 @@ padding:14px;
 }
 
 }
+
+.login-mode-heading{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.mode-badge{
+    display:inline-block;
+    margin-bottom:8px;
+    padding:4px 8px;
+    border-radius:20px;
+    background:rgba(250,204,21,.16);
+    color:#facc15;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.08em;
+}
+
+.mode-badge.admin{
+    background:rgba(96,165,250,.16);
+    color:#93c5fd;
+}
+
+.login-switch{
+    color:#facc15;
+    text-decoration:none;
+    border:1px solid rgba(250,204,21,.45);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12px;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+.login-switch:hover{
+    background:rgba(250,204,21,.12);
+}
+
+.admin-login-hint{
+    margin-top:18px;
+    padding:12px 14px;
+    border:1px solid rgba(250,204,21,.28);
+    border-radius:10px;
+    background:rgba(250,204,21,.08);
+    color:#f8fafc;
+    font-size:12px;
+    display:grid;
+    gap:4px;
+}
+
+.admin-login-hint span{
+    color:#cbd5e1;
+}

@@ -1,204 +1,582 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./DrivingStep.css";
+import driverService from "../../../../services/driverService";
 
 const DrivingStep = ({
-  bookingData,
-  updateBooking,
-  nextStep,
-  prevStep,
+    bookingData,
+    updateBooking,
+    nextStep,
+    prevStep,
 }) => {
-  const [error, setError] = useState("");
 
-  const drivers = [
-    {
-      id: 1,
-      name: "Rahul Sharma",
-      experience: "5 Years",
-    },
-    {
-      id: 2,
-      name: "Amit Patil",
-      experience: "7 Years",
-    },
-    {
-      id: 3,
-      name: "Rohit Jadhav",
-      experience: "4 Years",
-    },
-  ];
+    const [drivers, setDrivers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-  const handleNext = () => {
-    if (
-      bookingData.drivingOption === "SELF" &&
-      !bookingData.drivingLicense
-    ) {
-      setError("Please upload your Driving Licence.");
-      return;
-    }
+    // =========================================================
+    // LOAD DRIVERS
+    // =========================================================
 
-    if (
-      bookingData.drivingOption === "WITH_DRIVER" &&
-      bookingData.driver === ""
-    ) {
-      setError("Please select a driver.");
-      return;
-    }
+    useEffect(() => {
+        loadDrivers();
+    }, []);
 
-    setError("");
-    nextStep();
-  };
+    const loadDrivers = async () => {
 
-  return (
-    <div className="driving-step">
+        try {
 
-      <h2>Choose Driving Option</h2>
+            setLoading(true);
+            setError("");
 
-      <p className="driving-subtitle">
-        Select how you want to travel.
-      </p>
+            const response =
+                await driverService.getAllDrivers();
 
-      <div className="driving-options">
+            console.log(
+                "FULL DRIVER RESPONSE:",
+                response
+            );
 
-        {/* Self Drive */}
+            console.log(
+                "DRIVER RESPONSE DATA:",
+                response?.data
+            );
 
-        <div
-          className={
-            bookingData.drivingOption === "SELF"
-              ? "option-card active"
-              : "option-card"
-          }
-          onClick={() =>
-            updateBooking({
-              drivingOption: "SELF",
-              driver: "",
-            })
-          }
-        >
-          <h3>🚗 Self Drive</h3>
+            /*
+             * Possible backend responses:
+             *
+             * {
+             *   success: true,
+             *   data: [...]
+             * }
+             *
+             * OR
+             *
+             * {
+             *   data: [...]
+             * }
+             *
+             * OR
+             *
+             * [...]
+             */
 
-          <p>
-            Drive the vehicle yourself.
-          </p>
-        </div>
+            const responseData = response?.data;
 
-        {/* With Driver */}
+            let driverList = [];
 
-        <div
-          className={
-            bookingData.drivingOption === "WITH_DRIVER"
-              ? "option-card active"
-              : "option-card"
-          }
-          onClick={() =>
-            updateBooking({
-              drivingOption: "WITH_DRIVER",
-              drivingLicense: null,
-            })
-          }
-        >
-          <h3>👨‍✈️ With Driver</h3>
+            if (Array.isArray(responseData)) {
 
-          <p>
-            Professional driver will drive for you.
-          </p>
-        </div>
+                // Backend directly returns array
+                driverList = responseData;
 
-      </div>
+            } else if (
+                Array.isArray(responseData?.data)
+            ) {
 
-      {/* Self Drive Upload */}
+                // ApiResponse format
+                driverList = responseData.data;
 
-      {bookingData.drivingOption === "SELF" && (
+            } else if (
+                Array.isArray(responseData?.content)
+            ) {
 
-        <div className="driver-select">
+                // Spring pagination format
+                driverList = responseData.content;
 
-          <label>Upload Driving Licence</label>
+            } else if (
+                Array.isArray(responseData?.drivers)
+            ) {
 
-          <input
-            type="file"
-            accept="image/*,.pdf"
-            onChange={(e) =>
-              updateBooking({
-                drivingLicense: e.target.files[0],
-              })
+                driverList = responseData.drivers;
             }
-          />
 
-          {bookingData.drivingLicense && (
-            <p className="file-name">
-              Selected File: {bookingData.drivingLicense.name}
+            console.log(
+                "FINAL DRIVER LIST:",
+                driverList
+            );
+
+            setDrivers(driverList);
+
+            if (driverList.length === 0) {
+
+                setError(
+                    "No drivers available."
+                );
+            }
+
+        } catch (err) {
+
+            console.error(
+                "DRIVER API ERROR:",
+                err
+            );
+
+            console.error(
+                "DRIVER API ERROR RESPONSE:",
+                err?.response?.data
+            );
+
+            setDrivers([]);
+
+            setError(
+                err?.response?.data?.message ||
+                "Unable to load drivers."
+            );
+
+        } finally {
+
+            setLoading(false);
+        }
+    };
+
+
+    // =========================================================
+    // GET DRIVER ID
+    // =========================================================
+
+    const getDriverId = (driver) => {
+
+        return (
+            driver?.driverId ??
+            driver?.id ??
+            driver?._id ??
+            ""
+        );
+    };
+
+
+    // =========================================================
+    // GET DRIVER NAME
+    // =========================================================
+
+    const getDriverName = (driver) => {
+
+        return (
+            driver?.name ??
+            driver?.fullName
+        );
+    };
+
+
+    // =========================================================
+    // GET EXPERIENCE
+    // =========================================================
+
+    const getExperience = (driver) => {
+
+        return (
+            driver?.experience ??
+            driver?.experienceYears ??
+            ""
+        );
+    };
+
+
+    // =========================================================
+    // DRIVER CHANGE
+    // =========================================================
+
+    const handleDriverChange = (e) => {
+
+        const selectedId =
+            e.target.value;
+
+        console.log(
+            "Selected Driver ID:",
+            selectedId
+        );
+
+        const selectedDriver =
+            drivers.find(
+                (driver) =>
+                    String(
+                        getDriverId(driver)
+                    ) ===
+                    String(selectedId)
+            );
+
+        console.log(
+            "Selected Driver:",
+            selectedDriver
+        );
+
+        updateBooking({
+
+            driverId: selectedId,
+
+            driverName:
+                selectedDriver
+                    ? getDriverName(selectedDriver)
+                    : "",
+        });
+
+        setError("");
+    };
+
+
+    // =========================================================
+    // DRIVING LICENSE CHANGE
+    // =========================================================
+
+    const handleLicenseChange = (e) => {
+
+        const file =
+            e.target.files?.[0] || null;
+
+        console.log(
+            "Driving Licence File:",
+            file
+        );
+
+        updateBooking({
+
+            drivingLicense: file,
+        });
+
+        setError("");
+    };
+
+
+    // =========================================================
+    // SELF DRIVE
+    // =========================================================
+
+    const handleSelfDrive = () => {
+
+        updateBooking({
+
+            drivingOption: "SELF_DRIVE",
+
+            driverId: "",
+            driverName: "",
+        });
+
+        setError("");
+    };
+
+
+    // =========================================================
+    // WITH DRIVER
+    // =========================================================
+
+    const handleWithDriver = () => {
+
+        updateBooking({
+
+            drivingOption: "WITH_DRIVER",
+
+            drivingLicense: null,
+        });
+
+        setError("");
+    };
+
+
+    // =========================================================
+    // NEXT
+    // =========================================================
+
+    const handleNext = () => {
+
+        // -----------------------------------------------------
+        // SELF DRIVE
+        // -----------------------------------------------------
+
+        if (
+            bookingData.drivingOption === "SELF_DRIVE"
+        ) {
+
+            if (
+                !bookingData.drivingLicense
+            ) {
+
+                setError(
+                    "Please upload your Driving Licence."
+                );
+
+                return;
+            }
+
+            console.log(
+                "Licence before next:",
+                bookingData.drivingLicense
+            );
+        }
+
+
+        // -----------------------------------------------------
+        // WITH DRIVER
+        // -----------------------------------------------------
+
+        if (
+            bookingData.drivingOption ===
+            "WITH_DRIVER"
+        ) {
+
+            if (!bookingData.driverId) {
+
+                setError(
+                    "Please select a driver."
+                );
+
+                return;
+            }
+
+            console.log(
+                "Driver ID before next:",
+                bookingData.driverId
+            );
+        }
+
+
+        setError("");
+
+        nextStep();
+    };
+
+
+    return (
+        <div className="driving-step">
+
+            <h2>
+                Choose Driving Option
+            </h2>
+
+            <p className="driving-subtitle">
+                Select how you want to travel.
             </p>
-          )}
+
+
+            {/* =================================================
+                OPTIONS
+            ================================================= */}
+
+            <div className="driving-options">
+
+                {/* SELF DRIVE */}
+
+                <div
+                    className={
+                        bookingData.drivingOption ===
+                        "SELF_DRIVE"
+                            ? "option-card active"
+                            : "option-card"
+                    }
+                    onClick={handleSelfDrive}
+                >
+
+                    <h3>
+                        🚗 Self Drive
+                    </h3>
+
+                    <p>
+                        Drive the vehicle
+                        yourself.
+                    </p>
+
+                </div>
+
+
+                {/* WITH DRIVER */}
+
+                <div
+                    className={
+                        bookingData.drivingOption ===
+                        "WITH_DRIVER"
+                            ? "option-card active"
+                            : "option-card"
+                    }
+                    onClick={handleWithDriver}
+                >
+
+                    <h3>
+                        👨‍✈️ With Driver
+                    </h3>
+
+                    <p>
+                        Professional driver
+                        will drive for you.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {/* =================================================
+                SELF DRIVE
+            ================================================= */}
+
+            {bookingData.drivingOption ===
+                "SELF" && (
+
+                <div className="driver-select">
+
+                    <label>
+                        Upload Driving Licence
+                    </label>
+
+                    <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/jpg,.pdf"
+                        onChange={
+                            handleLicenseChange
+                        }
+                    />
+
+
+                    {bookingData.drivingLicense && (
+
+                        <p className="file-name">
+
+                            Selected File:{" "}
+
+                            {
+                                bookingData
+                                    .drivingLicense
+                                    .name
+                            }
+
+                        </p>
+                    )}
+
+                </div>
+            )}
+
+
+            {/* =================================================
+                WITH DRIVER
+            ================================================= */}
+
+            {bookingData.drivingOption ===
+                "WITH_DRIVER" && (
+
+                <div className="driver-select">
+
+                    <label>
+                        Select Driver
+                    </label>
+
+
+                    {loading && (
+                        <p>
+                            Loading drivers...
+                        </p>
+                    )}
+
+
+                    {!loading &&
+                        drivers.length === 0 && (
+
+                        <p className="driver-error">
+                            {error ||
+                                "No drivers available."}
+                        </p>
+                    )}
+
+
+                    {!loading &&
+                        drivers.length > 0 && (
+
+                        <select
+                            value={
+                                bookingData.driverId ||
+                                ""
+                            }
+                            onChange={
+                                handleDriverChange
+                            }
+                        >
+
+                            <option value="">
+                                Select Driver
+                            </option>
+
+
+                            {drivers.map(
+                                (driver) => {
+
+                                    const id =
+                                        getDriverId(
+                                            driver
+                                        );
+
+                                    const name =
+                                        getDriverName(
+                                            driver
+                                        );
+
+                                    const experience =
+                                        getExperience(
+                                            driver
+                                        );
+
+                                    return (
+                                        <option
+                                            key={String(id)}
+                                            value={String(id)}
+                                        >
+
+                                            {name}
+
+                                            {experience
+                                                ? ` (${experience})`
+                                                : ""
+                                            }
+
+                                        </option>
+                                    );
+                                }
+                            )}
+
+                        </select>
+                    )}
+
+                </div>
+            )}
+
+
+            {/* =================================================
+                ERROR
+            ================================================= */}
+
+            {error &&
+                !loading &&
+                drivers.length > 0 && (
+
+                <div className="driver-error">
+                    {error}
+                </div>
+            )}
+
+
+            {/* =================================================
+                BUTTONS
+            ================================================= */}
+
+            <div className="driving-buttons">
+
+                <button
+                    type="button"
+                    className="back-btn"
+                    onClick={prevStep}
+                >
+                    ← Back
+                </button>
+
+
+                <button
+                    type="button"
+                    className="next-btn"
+                    onClick={handleNext}
+                >
+                    Next →
+                </button>
+
+            </div>
 
         </div>
-
-      )}
-
-      {/* Driver Selection */}
-
-      {bookingData.drivingOption === "WITH_DRIVER" && (
-
-        <div className="driver-select">
-
-          <label>Select Driver</label>
-
-          <select
-            value={bookingData.driver}
-            onChange={(e) =>
-              updateBooking({
-                driver: e.target.value,
-              })
-            }
-          >
-
-            <option value="">
-              Select Driver
-            </option>
-
-            {drivers.map((driver) => (
-              <option
-                key={driver.id}
-                value={driver.name}
-              >
-                {driver.name} ({driver.experience})
-              </option>
-            ))}
-
-          </select>
-
-        </div>
-
-      )}
-
-      {/* Error */}
-
-      {error && (
-        <div className="driver-error">
-          {error}
-        </div>
-      )}
-
-      {/* Buttons */}
-
-      <div className="driving-buttons">
-
-        <button
-          className="back-btn"
-          onClick={prevStep}
-        >
-          ← Back
-        </button>
-
-        <button
-          className="next-btn"
-          onClick={handleNext}
-        >
-          Next →
-        </button>
-
-      </div>
-
-    </div>
-  );
+    );
 };
 
 export default DrivingStep;

@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import "./UpdateProfile.css";
 
-const UpdateProfile = ({ onCancel }) => {
-
-    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+const UpdateProfile = ({ user: currentUser, onCancel, onSaved }) => {
 
     const [user, setUser] = useState({
-        fullName: loggedUser.fullName,
-        email: loggedUser.email,
-        mobile: loggedUser.mobile,
+        fullName: currentUser.fullName,
+        email: currentUser.email,
+        mobile: currentUser.mobile,
         drivingLicense: null
     });
 
@@ -40,9 +38,32 @@ const UpdateProfile = ({ onCancel }) => {
 
         e.preventDefault();
 
-        alert("Profile Updated Successfully");
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const emailTaken = users.some((storedUser) =>
+            storedUser.email.toLowerCase() === user.email.trim().toLowerCase() &&
+            storedUser.email !== currentUser.email
+        );
 
-        onCancel();
+        if (emailTaken) {
+            alert("Another account already uses this email address.");
+            return;
+        }
+
+        const updatedUser = {
+            ...currentUser,
+            fullName: user.fullName.trim(),
+            email: user.email.trim().toLowerCase(),
+            mobile: user.mobile.trim(),
+            drivingLicense: user.drivingLicense || currentUser.drivingLicense || null,
+        };
+        const updatedUsers = users.map((storedUser) =>
+            storedUser.email === currentUser.email ? updatedUser : storedUser
+        );
+
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+        localStorage.setItem("loggedUser", JSON.stringify(updatedUser));
+        alert("Profile Updated Successfully");
+        onSaved(updatedUser);
 
     };
 
@@ -67,6 +88,7 @@ const UpdateProfile = ({ onCancel }) => {
                         name="fullName"
                         value={user.fullName}
                         onChange={handleChange}
+                        required
                     />
 
                 </div>
@@ -80,6 +102,7 @@ const UpdateProfile = ({ onCancel }) => {
                         name="email"
                         value={user.email}
                         onChange={handleChange}
+                        required
                     />
 
                 </div>
@@ -93,6 +116,7 @@ const UpdateProfile = ({ onCancel }) => {
                         name="mobile"
                         value={user.mobile}
                         onChange={handleChange}
+                        required
                     />
 
                 </div>

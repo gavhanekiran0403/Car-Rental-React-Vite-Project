@@ -7,9 +7,10 @@ import {
     FaEnvelope,
     FaPhoneAlt,
     FaLock,
-    FaCarSide,
-    FaUpload
+    FaCarSide
 } from "react-icons/fa";
+
+import authService from "../../services/authService";
 
 const Register = () => {
 
@@ -21,71 +22,169 @@ const Register = () => {
         mobile: "",
         password: "",
         confirmPassword: "",
-        terms: false,
+        terms: false
     });
+
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
 
-        const { name, value, type, checked } = e.target;
+        const {
+            name,
+            value,
+            type,
+            checked
+        } = e.target;
 
-        setFormData({
-            ...formData,
-            [name]: type === "checkbox" ? checked : value,
-        });
-
+        setFormData((prev) => ({
+            ...prev,
+            [name]:
+                type === "checkbox"
+                    ? checked
+                    : value
+        }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
 
         e.preventDefault();
 
-        // Check password match
-        if(formData.password !== formData.confirmPassword){
-            alert("Passwords do not match");
+        if (loading) {
             return;
         }
 
-        // Get existing users
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-
-        // check if email already exists
-        const userExists = users.find(
-            (user) => user.email === formData.email
-        );
-
-        if(userExists){
-            alert("User already registered with this email.");
+        if (!formData.fullName.trim()) {
+            alert("Please enter your full name.");
             return;
         }
 
-        // Create new user object
-        const newUser = {
-            fullName : formData.fullName,
-            email : formData.email,
-            mobile : formData.mobile,
-            password : formData.password,
-        };
+        if (!formData.email.trim()) {
+            alert("Please enter your email address.");
+            return;
+        }
 
-        //save user
-        users.push(newUser);
-        localStorage.setItem("users", JSON.stringify(users));
+        if (!formData.mobile.trim()) {
+            alert("Please enter your mobile number.");
+            return;
+        }
 
-        alert("User successfully registered");
+        if (!formData.password) {
+            alert("Please enter your password.");
+            return;
+        }
 
-        setFormData({
-            fullName : "",
-            email : "",
-            mobile : "",
-            password : "",
-            confirmPassword : "",
-            terms : false,
-        });
+        if (
+            formData.password !==
+            formData.confirmPassword
+        ) {
+            alert("Passwords do not match.");
+            return;
+        }
 
-        console.log(users);
+        if (!formData.terms) {
+            alert(
+                "Please accept Terms & Conditions."
+            );
+            return;
+        }
 
-        // Redirect to Login page
-        navigate("/login");
+        try {
 
+            setLoading(true);
+
+            const userData = {
+                fullName: formData.fullName.trim(),
+                email: formData.email.trim().toLowerCase(),
+                phoneNo: formData.mobile.trim(),
+                password: formData.password
+            };
+
+            console.log(
+                "Registration data:",
+                userData
+            );
+
+            const response =
+                await authService.register(userData);
+
+            console.log(
+                "Registration response:",
+                response.data
+            );
+
+            const result = response.data;
+
+            if (
+                result.success === true ||
+                response.status === 200 ||
+                response.status === 201
+            ) {
+
+                alert(
+                    result.message ||
+                    "User successfully registered!"
+                );
+
+                setFormData({
+                    fullName: "",
+                    email: "",
+                    mobile: "",
+                    password: "",
+                    confirmPassword: "",
+                    terms: false
+                });
+
+                navigate("/login");
+
+            } else {
+
+                alert(
+                    result.message ||
+                    "Registration failed."
+                );
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Registration error:",
+                error
+            );
+
+            if (error.response) {
+
+                const responseData =
+                    error.response.data;
+
+                alert(
+                    responseData?.message ||
+                    responseData?.error ||
+                    (
+                        typeof responseData === "string"
+                            ? responseData
+                            : "Registration failed."
+                    )
+                );
+
+            } else if (error.request) {
+
+                alert(
+                    "Unable to connect to server. " +
+                    "Please make sure Spring Boot is running."
+                );
+
+            } else {
+
+                alert(
+                    error.message ||
+                    "Something went wrong."
+                );
+            }
+
+        } finally {
+
+            setLoading(false);
+        }
     };
 
     return (
@@ -94,28 +193,26 @@ const Register = () => {
 
             <div className="register-container">
 
-                {/* LEFT */}
-
                 <div className="register-left">
 
                     <div className="register-overlay">
 
-                        <FaCarSide className="register-icon"/>
+                        <FaCarSide
+                            className="register-icon"
+                        />
 
-                        <h1>CarRental</h1>
+                        <h1>
+                            CarRental
+                        </h1>
 
                         <p>
-
                             Join today and book your dream car
                             with luxury, comfort and safety.
-
                         </p>
 
                     </div>
 
                 </div>
-
-                {/* RIGHT */}
 
                 <div className="register-right">
 
@@ -124,7 +221,9 @@ const Register = () => {
                         onSubmit={handleSubmit}
                     >
 
-                        <h2>Create Account</h2>
+                        <h2>
+                            Create Account
+                        </h2>
 
                         <p>
                             Register to continue.
@@ -132,7 +231,7 @@ const Register = () => {
 
                         <div className="input-group">
 
-                            <FaUser/>
+                            <FaUser />
 
                             <input
                                 type="text"
@@ -140,6 +239,7 @@ const Register = () => {
                                 name="fullName"
                                 value={formData.fullName}
                                 onChange={handleChange}
+                                autoComplete="name"
                                 required
                             />
 
@@ -147,7 +247,7 @@ const Register = () => {
 
                         <div className="input-group">
 
-                            <FaEnvelope/>
+                            <FaEnvelope />
 
                             <input
                                 type="email"
@@ -155,6 +255,7 @@ const Register = () => {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
+                                autoComplete="email"
                                 required
                             />
 
@@ -162,7 +263,7 @@ const Register = () => {
 
                         <div className="input-group">
 
-                            <FaPhoneAlt/>
+                            <FaPhoneAlt />
 
                             <input
                                 type="tel"
@@ -170,6 +271,7 @@ const Register = () => {
                                 name="mobile"
                                 value={formData.mobile}
                                 onChange={handleChange}
+                                autoComplete="tel"
                                 required
                             />
 
@@ -177,7 +279,7 @@ const Register = () => {
 
                         <div className="input-group">
 
-                            <FaLock/>
+                            <FaLock />
 
                             <input
                                 type="password"
@@ -185,6 +287,7 @@ const Register = () => {
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
+                                autoComplete="new-password"
                                 required
                             />
 
@@ -192,7 +295,7 @@ const Register = () => {
 
                         <div className="input-group">
 
-                            <FaLock/>
+                            <FaLock />
 
                             <input
                                 type="password"
@@ -200,6 +303,7 @@ const Register = () => {
                                 name="confirmPassword"
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
+                                autoComplete="new-password"
                                 required
                             />
 
@@ -212,13 +316,18 @@ const Register = () => {
                                 <input
                                     type="checkbox"
                                     name="terms"
-                                    checked={formData.terms}
-                                    onChange={handleChange}
-                                    required
+                                    checked={
+                                        formData.terms
+                                    }
+                                    onChange={
+                                        handleChange
+                                    }
                                 />
 
-                                I agree to the Terms &
-                                Conditions
+                                <span>
+                                    I agree to the Terms &
+                                    Conditions
+                                </span>
 
                             </label>
 
@@ -227,20 +336,21 @@ const Register = () => {
                         <button
                             type="submit"
                             className="register-btn"
+                            disabled={loading}
                         >
-
-                            Register
-
+                            {loading
+                                ? "Registering..."
+                                : "Register"}
                         </button>
 
                         <p className="login-link">
 
                             Already have an account?
 
+                            {" "}
+
                             <Link to="/login">
-
                                 Login
-
                             </Link>
 
                         </p>
@@ -252,9 +362,7 @@ const Register = () => {
             </div>
 
         </div>
-
     );
-
 };
 
 export default Register;

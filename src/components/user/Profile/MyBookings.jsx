@@ -1,226 +1,353 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MyBookings.css";
 
-const bookings = [
-  {
-    id: 1,
-    bookingId: "CR100001",
-    carName: "BMW X5",
-    pickup: "Pune",
-    drop: "Mumbai",
-    pickupDate: "05 Aug 2026",
-    returnDate: "07 Aug 2026",
-    amount: 9000,
-    bookingStatus: "PENDING",
-    paymentStatus: "PENDING",
-  },
-  {
-    id: 2,
-    bookingId: "CR100002",
-    carName: "Mercedes C-Class",
-    pickup: "Pune",
-    drop: "Nashik",
-    pickupDate: "12 Aug 2026",
-    returnDate: "15 Aug 2026",
-    amount: 15000,
-    bookingStatus: "APPROVED",
-    paymentStatus: "PENDING",
-  },
-  {
-    id: 3,
-    bookingId: "CR100003",
-    carName: "Toyota Fortuner",
-    pickup: "Pune",
-    drop: "Goa",
-    pickupDate: "18 Aug 2026",
-    returnDate: "22 Aug 2026",
-    amount: 22000,
-    bookingStatus: "APPROVED",
-    paymentStatus: "PAID",
-  },
-  {
-    id: 4,
-    bookingId: "CR100004",
-    carName: "Audi A6",
-    pickup: "Mumbai",
-    drop: "Pune",
-    pickupDate: "25 Aug 2026",
-    returnDate: "27 Aug 2026",
-    amount: 11000,
-    bookingStatus: "REJECTED",
-    paymentStatus: "PENDING",
-  },
-  {
-    id: 5,
-    bookingId: "CR100005",
-    carName: "Hyundai Creta",
-    pickup: "Pune",
-    drop: "Satara",
-    pickupDate: "28 Aug 2026",
-    returnDate: "30 Aug 2026",
-    amount: 6000,
-    bookingStatus: "CANCELLED",
-    paymentStatus: "PENDING",
-  },
-];
+import bookingService from "../../../services/bookingService";
+import carService from "../../../services/carService"; 
 
 const MyBookings = () => {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const cancelBooking = (id) => {
+    const [bookings, setBookings] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    if (window.confirm("Cancel this booking?")) {
+    // Fetch bookings
+    useEffect(() => {
 
-      alert("Booking Cancelled Successfully");
+        fetchBookings();
 
-      // Backend API
+    }, []);
+
+ const fetchBookings = async () => {
+    try {
+        setLoading(true);
+        setError("");
+
+        const storedUser = localStorage.getItem("loggedUser");
+
+        if (!storedUser) {
+            setError("Please login to view bookings.");
+            return;
+        }
+
+        const user = JSON.parse(storedUser);
+        const userId = user.userId || user.id;
+
+        if (!userId) {
+            setError("User ID not found.");
+            return;
+        }
+
+        // Fetch user bookings
+        const response =
+            await bookingService.getBookingsByUserId(userId);
+
+        const responseData = response.data?.data ?? response.data;
+
+        const bookingList = Array.isArray(responseData)
+            ? responseData
+            : responseData?.content ?? [];
+
+        // Fetch car details using carId
+        const updatedBookings = await Promise.all(
+    bookingList.map(async (booking) => {
+        try {
+            const carData = await carService.getCarById(booking.carId);
+
+            return {
+                ...booking,
+                carName: carData.modelName,
+                carNumber: carData.carNo,
+            };
+
+        } catch (error) {
+            console.error("Unable to fetch car:", booking.carId, error);
+
+            return {
+                ...booking,
+                carName: "Car not found",
+                carNumber: "N/A",
+            };
+        }
+    })
+);
+
+setBookings(updatedBookings);
+
+    } catch (error) {
+        console.error("Booking fetch error:", error);
+        setError("Unable to load bookings.");
+    } finally {
+        setLoading(false);
+    }
+};
+
+
+    // Navigate to payment
+    const handlePayment = (booking) => {
+
+        navigate(`/payment/${booking.id ?? booking.bookingId}`);
+
+    };
+
+
+    // Cancel booking
+    const cancelBooking = async (booking) => {
+
+        if (!window.confirm("Are you sure you want to cancel this booking?")) {
+            return;
+        }
+
+        try {
+
+            const bookingId = booking.id ?? booking.bookingId;
+
+            await bookingService.cancelBooking(bookingId);
+
+            alert("Booking cancelled successfully.");
+
+            fetchBookings();
+
+        } catch (err) {
+
+            console.error("Cancel Booking Error:", err);
+
+            alert(
+                err.response?.data?.message ||
+                "Unable to cancel booking."
+            );
+
+        }
+
+    };
+
+
+    // Loading
+    if (loading) {
+
+        return (
+            <div className="my-bookings">
+                <h2>Loading Bookings...</h2>
+            </div>
+        );
 
     }
 
-  };
 
-  return (
+    // Error
+    if (error) {
 
-    <div className="my-bookings">
+        return (
+            <div className="my-bookings">
+                <h2>{error}</h2>
 
-      <h2>My Bookings</h2>
+                <button onClick={fetchBookings}>
+                    Retry
+                </button>
+            </div>
+        );
 
-      <div className="booking-table">
+    }
 
-        <table>
 
-          <thead>
+    return (
 
-            <tr>
+        <div className="my-bookings">
 
-              <th>Booking ID</th>
-              <th>Car</th>
-              <th>Pickup</th>
-              <th>Drop</th>
-              <th>Pickup Date</th>
-              <th>Return Date</th>
-              <th>Amount</th>
-              <th>Booking</th>
-              <th>Payment</th>
-              <th>Actions</th>
+            <h2>My Bookings</h2>
 
-            </tr>
+            <div className="booking-table">
 
-          </thead>
+                <table>
 
-          <tbody>
+                    <thead>
 
-            {bookings.map((booking) => (
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Car</th>
+                            <th>Pickup</th>
+                            <th>Drop</th>
+                            <th>Pickup Date</th>
+                            <th>Return Date</th>
+                            <th>Amount</th>
+                            <th>Booking</th>
+                            <th>Payment</th>
+                            <th>Actions</th>
+                        </tr>
 
-              <tr key={booking.id}>
+                    </thead>
 
-                <td>{booking.bookingId}</td>
+                    <tbody>
 
-                <td>{booking.carName}</td>
+                        {bookings.length > 0 ? (
 
-                <td>{booking.pickup}</td>
+                            bookings.map((booking) => {
 
-                <td>{booking.drop}</td>
+                                const bookingId =
+                                    booking.id ?? booking.bookingId;
 
-                <td>{booking.pickupDate}</td>
+                                const bookingStatus =
+                                    booking.bookingStatus?.toUpperCase();
 
-                <td>{booking.returnDate}</td>
+                                const paymentStatus =
+                                    booking.paymentStatus?.toUpperCase();
 
-                <td>₹ {booking.amount}</td>
+                                return (
 
-                <td>
+                                    <tr key={bookingId}>
 
-                  <span className={booking.bookingStatus.toLowerCase()}>
+                                        <td>
+                                            {booking.bookingId}
+                                        </td>
 
-                    {booking.bookingStatus}
+                                        <td>
+                                            {booking.modelName ??
+                                                booking.car?.modelName ??
+                                                "N/A"}
+                                        </td>
 
-                  </span>
+                                        <td>
+                                            {booking.pickupLocation ??
+                                                booking.pickup ??
+                                                "N/A"}
+                                        </td>
 
-                </td>
+                                        <td>
+                                            {booking.dropLocation ??
+                                                booking.drop ??
+                                                "N/A"}
+                                        </td>
 
-                <td>
+                                        <td>
+                                            {booking.pickupDate}
+                                        </td>
 
-                  <span className={booking.paymentStatus.toLowerCase()}>
+                                        <td>
+                                            {booking.returnDate}
+                                        </td>
 
-                    {booking.paymentStatus}
+                                        <td>
+                                            ₹ {booking.totalAmount ??
+                                                booking.amount ??
+                                                0}
+                                        </td>
 
-                  </span>
+                                        <td>
+                                            <span className={
+                                                bookingStatus?.toLowerCase()
+                                            }>
+                                                {bookingStatus}
+                                            </span>
+                                        </td>
 
-                </td>
+                                        <td>
+                                            <span className={
+                                                paymentStatus?.toLowerCase()
+                                            }>
+                                                {paymentStatus}
+                                            </span>
+                                        </td>
 
-                <td>
+                                        <td>
 
-                  <div className="action-buttons">
+                                            <div className="action-buttons">
 
-                    <button
-                      className="view-btn"
-                      onClick={() =>
-                        navigate(`/booking-details/${booking.id}`)
-                      }
-                    >
-                      View
-                    </button>
+                                                {/* VIEW */}
 
-                    {booking.bookingStatus === "APPROVED" &&
-                      booking.paymentStatus === "PENDING" && (
+                                                <button
+                                                    className="view-btn"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/booking-details/${bookingId}`
+                                                        )
+                                                    }
+                                                >
+                                                    View
+                                                </button>
 
-                        <button
-                          className="pay-btn"
-                          onClick={() =>
-                            navigate(`/payment/${booking.id}`)
-                          }
-                        >
-                          Pay
-                        </button>
 
-                      )}
+                                                {/* PAY */}
 
-                    {booking.paymentStatus === "PAID" && (
+                                                {bookingStatus === "APPROVED" &&
+                                                    paymentStatus === "PENDING" && (
 
-                      <button
-                        className="invoice-btn"
-                        onClick={() =>
-                          navigate("/invoice")
-                        }
-                      >
-                        Invoice
-                      </button>
+                                                        <button
+                                                            className="pay-btn"
+                                                            onClick={() =>
+                                                                handlePayment(booking)
+                                                            }
+                                                        >
+                                                            Pay
+                                                        </button>
 
-                    )}
+                                                    )}
 
-                    {(booking.bookingStatus === "PENDING" ||
-                      booking.bookingStatus === "APPROVED") && (
 
-                        <button
-                          className="cancel-btn"
-                          onClick={() =>
-                            cancelBooking(booking.id)
-                          }
-                        >
-                          Cancel
-                        </button>
+                                                {/* INVOICE */}
 
-                      )}
+                                                {paymentStatus === "PAID" && (
 
-                  </div>
+                                                    <button
+                                                        className="invoice-btn"
+                                                        onClick={() =>
+                                                            navigate("/invoice", {
+                                                                state: { booking }
+                                                            })
+                                                        }
+                                                    >
+                                                        Invoice
+                                                    </button>
 
-                </td>
+                                                )}
 
-              </tr>
 
-            ))}
+                                                {/* CANCEL */}
 
-          </tbody>
+                                                {(bookingStatus === "PENDING" ||
+                                                    bookingStatus === "APPROVED") && (
 
-        </table>
+                                                        <button
+                                                            className="cancel-btn"
+                                                            onClick={() =>
+                                                                cancelBooking(booking)
+                                                            }
+                                                        >
+                                                            Cancel
+                                                        </button>
 
-      </div>
+                                                    )}
 
-    </div>
+                                            </div>
 
-  );
+                                        </td>
+
+                                    </tr>
+
+                                );
+
+                            })
+
+                        ) : (
+
+                            <tr>
+                                <td colSpan="10">
+                                    No bookings found.
+                                </td>
+                            </tr>
+
+                        )}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    );
 
 };
 

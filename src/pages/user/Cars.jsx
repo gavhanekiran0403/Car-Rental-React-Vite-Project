@@ -1,109 +1,582 @@
-import React from "react";
+import { useEffect, useState } from "react";
+
 import "./Cars.css";
+
 import CarCard from "../../components/user/CarCard";
 
-const cars = [
-  {
-    id: 1,
-    modelName: "BMW X5",
-    fuelType: "Diesel",
-    seats: 7,
-    rent: 4500,
-    carYearModel: 2024,
+import carService from "../../services/carService";
+
+// ========================================
+// BACKEND URL
+// ========================================
+
+const API_BASE_URL = "http://localhost:5151";
+
+// ========================================
+// IMAGE URL
+// ========================================
+
+const getImageUrl = (image) => {
+  if (!image || typeof image !== "string") {
+    return "";
+  }
+
+  const imagePath = image.trim();
+
+  if (!imagePath) {
+    return "";
+  }
+
+  // Complete URL
+  if (
+    imagePath.startsWith("http://") ||
+    imagePath.startsWith("https://")
+  ) {
+    return imagePath;
+  }
+
+  // /uploads/...
+  if (imagePath.startsWith("/")) {
+    return `${API_BASE_URL}${imagePath}`;
+  }
+
+  // uploads/...
+  return `${API_BASE_URL}/${imagePath}`;
+};
+
+// ========================================
+// NORMALIZE CAR
+// ========================================
+
+const normalizeCar = (car) => {
+  let images = [];
+
+  if (Array.isArray(car?.images)) {
+    images = car.images;
+  } else if (Array.isArray(car?.imageUrls)) {
+    images = car.imageUrls;
+  } else if (car?.imageUrl) {
+    images = [car.imageUrl];
+  }
+
+  return {
+    ...car,
+
+    id: car?.carId ?? car?.id,
+
+    modelName:
+      car?.modelName ??
+      car?.model ??
+      car?.name ??
+      "Car",
+
+    fuelType:
+      car?.fuelType ??
+      car?.fuel ??
+      "N/A",
+
+    seats:
+      car?.seats ??
+      car?.seatCount ??
+      "N/A",
+
+    rent:
+      car?.rent ??
+      car?.rentPerDay ??
+      car?.price ??
+      0,
+
+    carYearModel:
+      car?.carYearModel ??
+      car?.year ??
+      "N/A",
+
     features:
-      "GPS Navigation • Sunroof • Leather Seats • Reverse Camera • ABS • Airbags",
-    images: [
-      "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1200",
-      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=500",
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500",
-      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500",
-    ],
-  },
-  {
-    id: 2,
-    modelName: "Mercedes C-Class",
-    fuelType: "Petrol",
-    seats: 5,
-    rent: 5200,
-    carYearModel: 2023,
-    features:
-      "Automatic • GPS • Premium Audio • Leather Seats • Cruise Control",
-    images: [
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=1200",
-      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=500",
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=500",
-      "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=500",
-    ],
-  },
-  {
-    id: 3,
-    modelName: "Toyota Fortuner",
-    fuelType: "Diesel",
-    seats: 7,
-    rent: 3800,
-    carYearModel: 2022,
-    features:
-      "Touch Screen • Rear Camera • Bluetooth • ABS • Airbags",
-    images: [
-      "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=1200",
-      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=500",
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500",
-      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500",
-    ],
-  },
-];
+      Array.isArray(car?.features)
+        ? car.features.join(" • ")
+        : car?.features ?? "",
+
+    images:
+      images
+        .map(getImageUrl)
+        .filter(Boolean),
+  };
+};
+
+// ========================================
+// GET CARS FROM API RESPONSE
+// ========================================
+
+const getCarsFromResponse = (result) => {
+  console.log("Cars API response:", result);
+
+  // Backend:
+  // success = false
+  if (!result?.success) {
+    throw new Error(
+      result?.message ||
+      "Unable to load cars."
+    );
+  }
+
+  const data = result?.data;
+
+  // ======================================
+  // data = [...]
+  // ======================================
+
+  if (Array.isArray(data)) {
+    return {
+      cars: data,
+      totalPages: 1,
+      totalElements: data.length,
+    };
+  }
+
+  // ======================================
+  // data = { content: [...] }
+  // ======================================
+
+  if (Array.isArray(data?.content)) {
+    return {
+      cars: data.content,
+      totalPages: data.totalPages ?? 1,
+      totalElements: data.totalElements ?? data.content.length,
+    };
+  }
+
+  // ======================================
+  // data = { data: [...] }
+  // ======================================
+
+  if (Array.isArray(data?.data)) {
+    return {
+      cars: data.data,
+      totalPages: data.totalPages ?? 1,
+      totalElements: data.totalElements ?? data.data.length,
+    };
+  }
+
+  return {
+    cars: [],
+    totalPages: 1,
+    totalElements: 0,
+  };
+};
+
+// ========================================
+// CARS COMPONENT
+// ========================================
 
 export default function Cars() {
+
+  // ======================================
+  // CAR DATA
+  // ======================================
+
+  const [cars, setCars] = useState([]);
+
+  // ======================================
+  // LOADING / ERROR
+  // ======================================
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  // ======================================
+  // PAGINATION
+  // ======================================
+
+  // Spring Boot page starts from 0
+  const [currentPage, setCurrentPage] =
+    useState(0);
+
+  const [totalPages, setTotalPages] =
+    useState(1);
+
+  const [totalElements, setTotalElements] =
+    useState(0);
+
+  // Cars per page
+  const [pageSize] =
+    useState(8);
+
+  // ======================================
+  // LOAD CARS
+  // ======================================
+
+  useEffect(() => {
+
+    let mounted = true;
+
+    const loadCars = async () => {
+
+      try {
+
+        setLoading(true);
+
+        setError("");
+
+        console.log(
+          `Loading cars - page: ${currentPage}, size: ${pageSize}`
+        );
+
+        const result =
+          await carService.getAllCars(
+            currentPage,
+            pageSize
+          );
+
+        console.log(
+          "GET /cars:",
+          result
+        );
+
+        const {
+          cars: carList,
+          totalPages: backendTotalPages,
+          totalElements: backendTotalElements,
+        } =
+          getCarsFromResponse(result);
+
+        console.log(
+          "Car list:",
+          carList
+        );
+
+        const normalizedCars =
+          carList
+            .map(normalizeCar)
+            .filter(
+              (car) =>
+                car.id != null
+            );
+
+        console.log(
+          "Normalized cars:",
+          normalizedCars
+        );
+
+        if (mounted) {
+
+          setCars(
+            normalizedCars
+          );
+
+          setTotalPages(
+            backendTotalPages
+          );
+
+          setTotalElements(
+            backendTotalElements
+          );
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Cars loading error:",
+          error
+        );
+
+        if (mounted) {
+
+          setError(
+            error?.message ||
+            error?.response?.data?.message ||
+            "Unable to load cars right now."
+          );
+
+        }
+
+      } finally {
+
+        if (mounted) {
+
+          setLoading(false);
+
+        }
+
+      }
+
+    };
+
+    loadCars();
+
+    return () => {
+
+      mounted = false;
+
+    };
+
+  }, [currentPage, pageSize]);
+
+  // ======================================
+  // PAGE CHANGE
+  // ======================================
+
+  const handlePageChange = (page) => {
+
+    if (
+      page < 0 ||
+      page >= totalPages
+    ) {
+      return;
+    }
+
+    setCurrentPage(page);
+
+    // Scroll to cars section
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+  };
+
+  // ======================================
+  // RENDER
+  // ======================================
+
   return (
+
     <div className="cars-page">
 
-      {/* Hero */}
+      {/* ==================================
+          HERO
+      =================================== */}
 
       <section className="cars-hero">
+
         <div className="cars-overlay">
-          <h1>Premium Rental Cars</h1>
-          <p>Choose your perfect ride from our luxury collection.</p>
+
+          <h1>
+            Premium Rental Cars
+          </h1>
+
+          <p>
+            Choose your perfect ride
+            from our luxury collection.
+          </p>
+
         </div>
+
       </section>
 
-      {/* Heading */}
+
+      {/* ==================================
+          HEADING
+      =================================== */}
 
       <section className="cars-heading">
-        <span>PREMIUM COLLECTION</span>
 
-        <h2>Available Cars</h2>
+        <span>
+          PREMIUM COLLECTION
+        </span>
+
+        <h2>
+          Available Cars
+        </h2>
 
         <p>
-          Find the perfect luxury, SUV, sedan or economy car for your next
-          journey.
+          Find the perfect luxury,
+          SUV, sedan or economy car
+          for your next journey.
         </p>
+
       </section>
 
-      {/* Cards */}
+
+      {/* ==================================
+          CARS
+      =================================== */}
 
       <section className="cars-container">
 
-        {cars.map((car) => (
-          <CarCard
-            key={car.id}
-            car={car}
-          />
-        ))}
+        {/* LOADING */}
+
+        {loading && (
+          <p className="cars-message">
+            Loading available cars...
+          </p>
+        )}
+
+
+        {/* ERROR */}
+
+        {!loading &&
+          error && (
+            <p className="cars-message cars-error">
+              {error}
+            </p>
+          )}
+
+
+        {/* NO CARS */}
+
+        {!loading &&
+          !error &&
+          cars.length === 0 && (
+
+            <p className="cars-message">
+              No cars are available
+              right now.
+            </p>
+
+          )}
+
+
+        {/* CAR CARDS */}
+
+        {!loading &&
+          !error &&
+          cars.length > 0 && (
+
+            cars.map(
+              (car) => (
+
+                <CarCard
+                  key={car.id}
+                  car={car}
+                />
+
+              )
+            )
+
+          )}
 
       </section>
 
-      {/* Banner */}
+
+      {/* ==================================
+          PAGINATION
+      =================================== */}
+
+      {!loading &&
+        !error &&
+        totalPages > 1 && (
+
+          <div className="pagination-wrapper">
+
+            {/* PAGINATION INFO */}
+
+            <div className="pagination-info">
+
+              Showing{" "}
+
+              <strong>
+                {cars.length}
+              </strong>
+
+              {" "}of{" "}
+
+              <strong>
+                {totalElements}
+              </strong>
+
+              {" "}cars
+
+            </div>
+
+
+            {/* PAGINATION */}
+
+            <div className="pagination">
+
+              {/* PREVIOUS */}
+
+              <button
+                className="pagination-arrow"
+                onClick={() =>
+                  handlePageChange(
+                    currentPage - 1
+                  )
+                }
+                disabled={
+                  currentPage === 0
+                }
+                aria-label="Previous page"
+              >
+                ‹
+              </button>
+
+
+              {/* PAGE NUMBERS */}
+
+              {Array.from(
+                { length: totalPages },
+                (_, index) => index
+              ).map((page) => (
+
+                <button
+                  key={page}
+                  className={
+                    currentPage === page
+                      ? "pagination-number active"
+                      : "pagination-number"
+                  }
+                  onClick={() =>
+                    handlePageChange(page)
+                  }
+                >
+                  {page + 1}
+                </button>
+
+              ))}
+
+
+              {/* NEXT */}
+
+              <button
+                className="pagination-arrow"
+                onClick={() =>
+                  handlePageChange(
+                    currentPage + 1
+                  )
+                }
+                disabled={
+                  currentPage ===
+                  totalPages - 1
+                }
+                aria-label="Next page"
+              >
+                ›
+              </button>
+
+            </div>
+
+          </div>
+
+        )}
+
+
+      {/* ==================================
+          BANNER
+      =================================== */}
 
       <section className="cars-banner">
 
-        <h2>Drive Your Dream Car Today</h2>
+        <h2>
+          Drive Your Dream Car Today
+        </h2>
 
-        <p>Luxury • Comfort • Safety • Affordable Pricing</p>
+        <p>
+          Luxury • Comfort • Safety •
+          Affordable Pricing
+        </p>
 
-        <button>Explore More Cars</button>
+        <button>
+          Explore More Cars
+        </button>
 
       </section>
 
     </div>
+
   );
+
 }

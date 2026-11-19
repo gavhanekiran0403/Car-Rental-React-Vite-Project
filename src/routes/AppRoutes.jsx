@@ -18,6 +18,12 @@ import Payment from "../pages/user/Payment";
 import PaymentSuccess from "../pages/user/PaymentSuccess";
 import Invoice from "../pages/user/Invoice";
 import Favorites from "../pages/user/Favorites";
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import AdminDirectory from "../pages/admin/AdminDirectory";
+import AdminBookings from "../pages/admin/AdminBookings";
+import AdminProfile from "../pages/admin/AdminProfile";
+import AdminRoute from "../components/admin/AdminRoute";
+import UserRoute from "../components/user/UserRoute";
 
 const AppRoutes = () => {
   return (
@@ -33,8 +39,11 @@ const AppRoutes = () => {
           <Route path="contactUs" element={<ContactUs />} />
           <Route path="aboutUs" element={<AboutUs />} />
           <Route path="login" element={<Login />} />
+          <Route path="admin-login" element={<Login mode="admin" />} />
           <Route path="register" element={<Register />} />
-          <Route path="profile" element={<Profile />} />
+          <Route element={<UserRoute />}>
+            <Route path="profile" element={<Profile />} />
+          </Route>
           <Route path="user-notifications" element={<UserNotifications />} />
           <Route path="booking-details/:id" element={<BookingDetails />}/>
           <Route path="payment/:id" element={<Payment />}/>
@@ -44,9 +53,18 @@ const AppRoutes = () => {
         </Route>
 
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
-          {/* Example */}
-          {/* <Route index element={<Dashboard />} /> */}
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="users" element={<AdminDirectory type="users" />} />
+            <Route path="owners" element={<AdminDirectory type="owners" />} />
+            <Route path="cars" element={<AdminDirectory type="cars" />} />
+            <Route path="banks" element={<AdminDirectory type="banks" />} />
+            <Route path="bookings" element={<AdminBookings />} />
+            <Route path="notifications" element={<AdminProfile notifications />} />
+            <Route path="profile" element={<AdminProfile />} />
+          </Route>
         </Route>
 
       </Routes>

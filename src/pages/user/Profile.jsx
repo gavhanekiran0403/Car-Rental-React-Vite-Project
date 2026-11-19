@@ -15,22 +15,52 @@ import {
 } from "react-icons/fa";
 
 import "./Profile.css";
+import authService from "../../services/authService";
 
 const Profile = () => {
   const [page, setPage] = useState("details");
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("loggedUser")));
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    const confirmLogout = window.confirm(
-      "Are you sure you want to logout?"
-    );
+  const handleLogout = async () => { 
+    const confirmLogout = window.confirm( 
+      "Are you sure you want to logout?" 
+    ); 
 
-    if (confirmLogout) {
-      localStorage.removeItem("loggedUser");
-      navigate("/login");
-      window.location.reload();
-    }
+    if (!confirmLogout) { 
+      return; 
+    } 
+    
+    try { 
+      if (user?.userId) { 
+        await authService.logout(user.userId); 
+      } 
+    } catch (error) { 
+      console.error("Logout API error:", error); 
+    } finally { 
+      // Clear frontend session even if API logout fails 
+        localStorage.removeItem("token"); 
+        localStorage.removeItem("loggedUser"); 
+        localStorage.removeItem("adminSession"); 
+
+        setUser(null); 
+
+        navigate("/login", { 
+          replace: true, 
+        }); 
+        
+        } 
+      };
+
+  const handleProfileSaved = (updatedUser) => {
+    setUser(updatedUser);
+    setPage("details");
+  };
+
+  const handlePasswordChanged = (updatedUser) => {
+    setUser(updatedUser);
+    setPage("details");
   };
 
   return (
@@ -91,18 +121,22 @@ const Profile = () => {
 
         <div className="profile-content">
 
-          {page === "details" && <ProfileDetails />}
+          {page === "details" && <ProfileDetails user={user} />}
 
           {page === "bookings" && <MyBookings />}
 
           {page === "edit" && (
             <UpdateProfile
+              user={user}
+              onSaved={handleProfileSaved}
               onCancel={() => setPage("details")}
             />
           )}
 
           {page === "password" && (
             <ChangePassword
+              user={user}
+              onPasswordChanged={handlePasswordChanged}
               onCancel={() => setPage("details")}
             />
           )}

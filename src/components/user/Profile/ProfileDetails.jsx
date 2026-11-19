@@ -1,14 +1,11 @@
 import React from "react";
 import "./ProfileDetails.css";
 
-const ProfileDetails = ({ onEdit, onPassword }) => {
-
-    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
-
-    const user = {
-        fullName: loggedUser.fullName,
-        email: loggedUser.email,
-        mobile: loggedUser.mobile,
+const ProfileDetails = ({ user }) => {
+    const profile = {
+        fullName: user.fullName,
+        email: user.email,
+        mobile: user.phoneNo,
         drivingLicense:
             "https://via.placeholder.com/500x280?text=Driving+License"
     };
@@ -27,17 +24,17 @@ const ProfileDetails = ({ onEdit, onPassword }) => {
 
                 <div className="profile-row">
                     <span>Full Name</span>
-                    <p>{user.fullName}</p>
+                    <p>{profile.fullName}</p>
                 </div>
 
                 <div className="profile-row">
                     <span>Email Address</span>
-                    <p>{user.email}</p>
+                    <p>{profile.email}</p>
                 </div>
 
                 <div className="profile-row">
                     <span>Mobile Number</span>
-                    <p>{user.mobile}</p>
+                    <p>{profile.mobile}</p>
                 </div>
 
             </div>
@@ -47,7 +44,7 @@ const ProfileDetails = ({ onEdit, onPassword }) => {
                 <h3>Driving License</h3>
 
                 <img
-                    src={user.drivingLicense}
+                    src={profile.drivingLicense}
                     alt="Driving License"
                 />
 

@@ -248,6 +248,302 @@ body{
     transform:translateY(-2px);
 }
 
+/* PAYMENT FORM */
+
+/* =========================================
+   EXPANDABLE PAYMENT SECTIONS
+========================================= */
+
+.payment-option-wrapper {
+    margin-bottom: 15px;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 18px;
+
+    background: #111827;
+
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+
+    cursor: pointer;
+    transition: .3s;
+}
+
+.payment-option:hover,
+.payment-option.active {
+    border-color: #facc15;
+    background: #263246;
+}
+
+.payment-option > span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.payment-option strong {
+    color: #fff;
+    font-size: 15px;
+}
+
+.payment-option small {
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.payment-option input {
+    accent-color: #facc15;
+}
+
+
+/* =========================================
+   EXPANDED FORM
+========================================= */
+
+.expanded-payment-form {
+    margin-top: 10px;
+    padding: 25px;
+
+    background: #111827;
+
+    border: 1px solid rgba(250,204,21,.3);
+    border-radius: 12px;
+
+    animation: paymentSlide .3s ease;
+}
+
+@keyframes paymentSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.expanded-payment-form h3 {
+    color: #facc15;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================
+   CARD INPUTS
+========================================= */
+
+.expanded-payment-form > input,
+.expanded-payment-form .card-row input,
+.upi-input-section input {
+    width: 100%;
+    height: 50px;
+
+    padding: 0 15px;
+
+    background: #1f2937;
+
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+
+    color: #fff;
+    font-size: 14px;
+
+    outline: none;
+
+    margin-bottom: 15px;
+}
+
+.expanded-payment-form input::placeholder {
+    color: #9ca3af;
+}
+
+.expanded-payment-form input:focus {
+    border-color: #facc15;
+    box-shadow: 0 0 0 2px rgba(250,204,21,.1);
+}
+
+.card-row {
+    display: flex;
+    gap: 15px;
+}
+
+.card-row input {
+    flex: 1;
+    min-width: 0;
+}
+
+
+/* =========================================
+   GATEWAY NOTICE
+========================================= */
+
+.gateway-notice {
+    color: #facc15;
+    background: rgba(250,204,21,.08);
+
+    border: 1px solid rgba(250,204,21,.2);
+    border-radius: 8px;
+
+    padding: 12px;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   UPI OPTIONS
+========================================= */
+
+.upi-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+.upi-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 18px 10px;
+
+    background: #1f2937;
+
+    color: #fff;
+
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+
+    cursor: pointer;
+    transition: .3s;
+}
+
+.upi-option:hover,
+.upi-option.selected {
+    border-color: #facc15;
+    background: #374151;
+}
+
+.upi-logo {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.phonepe {
+    background: #5f259f;
+    color: #fff;
+}
+
+.googlepay {
+    background: #fff;
+    color: #4285f4;
+}
+
+.upi-logo-id {
+    background: #facc15;
+    color: #111827;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   UPI INPUT
+========================================= */
+
+.upi-input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.upi-input-section label {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.upi-input-section input {
+    margin-bottom: 0;
+}
+
+
+/* =========================================
+   UPI SELECTED MESSAGE
+========================================= */
+
+.upi-selected-info {
+    background: #1f2937;
+    border: 1px solid rgba(250,204,21,.3);
+
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.upi-selected-info strong {
+    color: #facc15;
+}
+
+.upi-selected-info p {
+    color: #d1d5db;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+
+/* =========================================
+   COD MESSAGE
+========================================= */
+
+.cod-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 18px;
+    padding: 15px;
+
+    background: #1f2937;
+    border-radius: 10px;
+
+    color: #facc15;
+    font-size: 13px;
+}
+
+
+/* =========================================
+   DISABLED BUTTON
+========================================= */
+
+.pay-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
 /* ==========================
    TABLET
 ========================== */
@@ -294,6 +590,21 @@ body{
 
     .payment-buttons button{
         width:100%;
+    }
+
+    .upi-options {
+        grid-template-columns: 1fr;
+    }
+
+    .upi-option {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 15px;
+    }
+
+    .card-row {
+        flex-direction: column;
+        gap: 0;
     }
 
 }

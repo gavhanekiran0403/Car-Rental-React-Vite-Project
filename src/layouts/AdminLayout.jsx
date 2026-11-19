@@ -12,9 +12,9 @@ const AdminLayout = () => {
       <div className="admin-main">
         <AdminTopbar />
 
-        <div className="admin-content">
+        <main className="admin-content">
           <Outlet />
-        </div>
+        </main>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./ChangePassword.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const ChangePassword = ({ onCancel }) => {
+const ChangePassword = ({ user, onCancel, onPasswordChanged }) => {
 
     const [password, setPassword] = useState({
         currentPassword: "",
@@ -29,6 +29,11 @@ const ChangePassword = ({ onCancel }) => {
 
         e.preventDefault();
 
+        if (password.currentPassword !== user.password) {
+            alert("Your current password is incorrect.");
+            return;
+        }
+
         if (password.newPassword !== password.confirmPassword) {
 
             alert("New Password and Confirm Password do not match.");
@@ -37,9 +42,14 @@ const ChangePassword = ({ onCancel }) => {
 
         }
 
+        const updatedUser = { ...user, password: password.newPassword };
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        localStorage.setItem("users", JSON.stringify(users.map((storedUser) =>
+            storedUser.email === user.email ? updatedUser : storedUser
+        )));
+        localStorage.setItem("loggedUser", JSON.stringify(updatedUser));
         alert("Password Changed Successfully");
-
-        onCancel();
+        onPasswordChanged(updatedUser);
 
     };
 
